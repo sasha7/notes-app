@@ -1,0 +1,47 @@
+{
+  "name": "notes-app",
+  "description": "NodeJS simple note taking application",
+  "keywords": [
+    "node",
+    "express",
+    "react"
+  ],
+  "version": "0.0.0",
+  "author": "Sasa Macakanja <sasa.macakanja@gmail.com>",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sasha7/notes-app.git"
+  },
+  "scripts": {
+    "start": "DEBUG=notes-app:* node ./bin/www",
+    "watch": "DEBUG=notes-app:* nodemon ./bin/www",
+    "lint": "eslint .; exit 0",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "hbs": "~4.0.1",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "nodemon": "^1.11.0"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sasha7/notes-app/issues"
+  },
+  "engines": {
+    "node": ">= 5",
+    "npm": ">= 3"
+  }
+}
