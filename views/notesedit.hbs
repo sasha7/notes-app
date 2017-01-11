@@ -1,0 +1,14 @@
+<form method="POST" action="/notes/save">
+  <input type="hidden" name="create" value="{{create}}" />
+  <p>Key:
+    {{#if create }}
+
+      <input type="text" name="key" value="{{key}}" />
+    {{else}}
+      <input type="hidden" name="key" value="{{key}}" /> {{key}}
+    {{/if}}
+  </p>
+  <p>Title: <input type="text" name="title" value="{{note.title}}"></p>
+  <p><textarea placeholder="Enter a note..." name="body" cols="40" rows="10">{{note.body}}</textarea></p>
+  <p><input type="submit" value="Submit" /></p>
+</form>

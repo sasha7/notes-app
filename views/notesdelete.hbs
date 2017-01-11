@@ -1,0 +1,7 @@
+<form method="POST" action="/notes/destroy/confirm">
+  <input type="hidden" name="key" value="{{key}}" />
+  <p>Are you sure you want to delete {{note.title}}?</p>
+  <hr />
+  <input type="submit" value="DELETE" /> |
+  <a href="/notes/view/?key={{key}}">Cancel</a>
+</form>

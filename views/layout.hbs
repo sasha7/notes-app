@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <p>
+        <a href="/">Home</a>
+        <a href="/notes/add">Add Note</a>
+      </p>
+    </div>
+  </header>
+  <hr />
+  <h2>{{title}}</h2>
+
+  {{{body}}}
+</body>
+
 </html>
