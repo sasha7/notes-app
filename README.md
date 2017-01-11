@@ -1,5 +1,5 @@
 # notes-app
-NodeJS application for managin notes
+NodeJS application for managing notes
 
 Before installing make sure you have Node version >= 5.0 and NPM >= 3
 
