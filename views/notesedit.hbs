@@ -1,11 +1,12 @@
 <form method="POST" action="/notes/save">
   <input type="hidden" name="create" value="{{create}}" />
-  <p>Key:
+
     {{#if create }}
 
-      <input type="text" name="key" value="{{key}}" />
     {{else}}
-      <input type="hidden" name="key" value="{{key}}" /> {{key}}
+    <p>Key: {{key}}
+      <input type="hidden" name="key" value="{{key}}" />
+      </p>
     {{/if}}
   </p>
   <p>Title: <input type="text" name="title" value="{{note.title}}"></p>

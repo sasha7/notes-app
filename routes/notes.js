@@ -25,7 +25,6 @@ router.get('/add', (req, res, next) => {
   res.render('notesedit', {
     title: 'Add a note',
     create: 1,
-    key: '',
     note: {
       body: '',
       title: ''
@@ -82,7 +81,7 @@ router.post('/save', (req, res, next) => {
   let promise;
   util.log(`note: ${util.inspect(req.body)}`);
   if (req.body.create) {
-    promise = notes.create(req.body.key, req.body.title, req.body.body);
+    promise = notes.create(req.body.title, req.body.body);
   } else {
     promise = notes.update(req.body.key, req.body.title, req.body.body);
   }
