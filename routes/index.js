@@ -30,6 +30,12 @@ router.get('/', (req, res, next) => {
       res.render('index', {
         title: 'Notes',
         notelist,
+        breadcrumbs: [
+          {
+            href: '/',
+            text: 'Home'
+          }
+        ]
       });
 
       util.log('notes', util.inspect(notelist));

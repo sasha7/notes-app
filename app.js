@@ -13,15 +13,13 @@ const notes = require('./routes/notes');
 
 const app = express();
 
+// register Handlebars helpers and partials
+hbsHelpers(hbs);
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
-// register Handlebars helpers
-hbsHelpers(hbs);
-
-// register Handlebars partials
-hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -1,0 +1,11 @@
+{{#if breadcrumbs}}
+<ol class="breadcrumb">
+  {{#each breadcrumbs}}
+    {{#if active}}
+    <li class="active">{{text}}</li>
+    {{else}}
+    <li><a href="{{href}}">{{text}}</a></li>
+    {{/if}}
+  {{/each}}
+</ol>
+{{/if}}

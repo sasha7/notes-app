@@ -14,7 +14,20 @@ router.get('/view', (req, res, next) => {
   const key = req.query.key;
   if (key) {
     notes.read(key)
-      .then(note => res.render('notesview', { title: `Note ${note.key}`, note }))
+      .then(note => res.render('notesview', {
+        title: `Note ${note.key}`,
+        note,
+        breadcrumbs: [
+          {
+            href: '/',
+            text: 'Home'
+          },
+          {
+            active: true,
+            text: note.title
+          }
+        ]
+      }))
       .catch(err => next(err));
   } else {
     errorHelper('Value for query param \'key\' is missing in the URL.', next);
@@ -28,7 +41,17 @@ router.get('/add', (req, res, next) => {
     note: {
       body: '',
       title: ''
-    }
+    },
+    breadcrumbs: [
+      {
+        href: '/',
+        text: 'Home'
+      },
+      {
+        active: true,
+        text: 'Add Note'
+      }
+    ]
   });
 });
 
@@ -37,12 +60,22 @@ router.get('/edit', (req, res, next) => {
   if (key) {
     notes.read(key)
       .then(note => res.render('notesedit', {
-        title: 'Edit note',
+        title: 'Edit Note',
         create: 0,
         key,
-        note
+        note,
+        breadcrumbs: [
+          {
+            href: '/',
+            text: 'Home'
+          },
+          {
+            active: true,
+            text: `Edit Note ${note.title}`
+          }
+        ]
       }))
-    .catch(err => next(err));
+      .catch(err => next(err));
   } else {
     errorHelper('Value for query param \'key\' is missing in the URL.', next);
   }
@@ -56,7 +89,17 @@ router.get('/destroy', (req, res, next) => {
         res.render('notesdelete', {
           title: note.title,
           key,
-          note
+          note,
+          breadcrumbs: [
+            {
+              href: '/',
+              text: 'Home'
+            },
+            {
+              active: true,
+              text: 'Delete Note'
+            }
+          ]
         });
       })
       .catch(err => next(err));
