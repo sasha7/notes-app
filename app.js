@@ -4,6 +4,8 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const hbs = require('hbs');
+const hbsHelpers = require('./helpers/handlebars');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -14,6 +16,12 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+// register Handlebars helpers
+hbsHelpers(hbs);
+
+// register Handlebars partials
+hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
