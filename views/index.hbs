@@ -1,9 +1,23 @@
-{{#if notelist.length }}
-<ul>
-  {{#each notelist}}
-  <li>{{key}} : <a href="/notes/view/?key={{key}}">{{title}}</a></li>
-  {{/each}}
-</ul>
-{{else}}
-<p>Your list is empty.</p>
-{{/if}}
+<div class="jumbotron">
+  <h3>Welcome!</h3>
+  <p>Organize all your notes, everywhere you are.</p>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel panel-success">
+      <div class="panel-heading">Recent notes</div>
+      <div class="panel-body">
+        {{#if notelist.length }}
+        <ul class="list-group">
+          {{#each notelist}}
+          <li class="list-group-item">{{inc @index}}. <a href="/notes/view/?key={{key}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p>List is currently empty. <strong><a href="/notes/add">Add a new note</a><strong/>.</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

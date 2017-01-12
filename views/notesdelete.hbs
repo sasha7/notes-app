@@ -1,7 +1,11 @@
-<form method="POST" action="/notes/destroy/confirm">
-  <input type="hidden" name="key" value="{{key}}" />
-  <p>Are you sure you want to delete {{note.title}}?</p>
-  <hr />
-  <input type="submit" value="DELETE" /> |
-  <a href="/notes/view/?key={{key}}">Cancel</a>
-</form>
+<div class="row">
+  <div class="col-xs-12">
+    <form method="POST" action="/notes/destroy/confirm">
+      <input type="hidden" name="key" value="{{key}}" />
+      <p>Are you sure you want to delete note <strong>{{note.title}}</strong>?</p>
+      <hr />
+      <button class="btn btn-danger" type="submit">DELETE</button>
+      <a class="btn btn-default" href="/notes/view/?key={{key}}">Cancel</a>
+    </form>
+  </div>
+</div>

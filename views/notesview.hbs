@@ -1,7 +1,16 @@
-<h2>{{note.title}}</h2>
-<p>
-  {{note.body}}
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>{{note.title}}</h2>
+    <hr/>
+    <p>
+      {{note.body}}
+    </p>
+  </div>
+</div>
 <hr/>
-<a href="/notes/edit/?key={{note.key}}">Edit</a> |
-<a href="/notes/destroy/?key={{note.key}}">Delete</a>
+<div class="row">
+  <div class="col-xs-12">
+    <a class="btn btn-default" href="/notes/edit/?key={{note.key}}">Edit</a>
+    <a class="btn btn-danger" href="/notes/destroy/?key={{note.key}}">Delete</a>
+  </div>
+</div>
