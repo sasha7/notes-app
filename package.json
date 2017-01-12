@@ -14,8 +14,8 @@
     "url": "git+https://github.com/sasha7/notes-app.git"
   },
   "scripts": {
-    "start": "DEBUG=notes-app:* node ./bin/www",
-    "watch": "open http://localhost:3000 && DEBUG=notes-app:* nodemon ./bin/www",
+    "start": "REQUEST_LOG_FORMAT=common DEBUG=notes-app:* node ./bin/www",
+    "watch": "REQUEST_LOG_FORMAT=common DEBUG=notes-app:* nodemon ./bin/www",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix"
   },
