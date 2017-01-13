@@ -1,6 +1,8 @@
 const express = require('express');
-const notes = require('../models/notes-memory');
+const notes = require('../models/notes-fs');
 const util = require('util');
+const log = require('debug')('notes-app:router-notes');
+const error = require('debug')('notes-app:error');
 
 const router = express.Router();
 

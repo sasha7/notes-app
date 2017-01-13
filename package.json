@@ -25,6 +25,7 @@
     "debug": "~2.2.0",
     "express": "~4.14.0",
     "file-stream-rotator": "0.0.7",
+    "fs-extra": "^1.0.0",
     "hbs": "~4.0.1",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",

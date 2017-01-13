@@ -1,6 +1,7 @@
 const express = require('express');
-const util = require('util');
-const notes = require('../models/notes-memory');
+const notes = require('../models/notes-fs');
+const log = require('debug')('notes-app:router-notes');
+const error = require('debug')('notes-app:error');
 
 const router = express.Router();
 
@@ -122,8 +123,7 @@ router.post('/destroy/confirm', (req, res, next) => {
 
 router.post('/save', (req, res, next) => {
   let promise;
-  util.log(`note: ${util.inspect(req.body)}`);
-  if (req.body.create) {
+  if (parseInt(req.body.create, 10)) {
     promise = notes.create(req.body.title, req.body.body);
   } else {
     promise = notes.update(req.body.key, req.body.title, req.body.body);
