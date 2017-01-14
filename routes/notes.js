@@ -1,7 +1,11 @@
 const express = require('express');
-const notes = require('../models/notes-fs');
+const path = require('path');
 const log = require('debug')('notes-app:router-notes');
 const error = require('debug')('notes-app:error');
+
+const MODEL = process.env.NOTES_MODEL ?
+  path.join('..', process.env.NOTES_MODEL) : '../models/notes-levelup';
+const notes = require(MODEL);
 
 const router = express.Router();
 
