@@ -9,6 +9,9 @@ const fs = require('fs');
 const rotator = require('file-stream-rotator');
 const hbsHelpers = require('./helpers/handlebars');
 const error = require('debug')('notes-app:error');
+const dotenv = require('dotenv');
+
+dotenv.load();
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -45,7 +48,10 @@ app.set('view engine', 'hbs');
 app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev'));
 
 // setup logger and log only error responses to access.log - without log rotation
-// app.use(logger('combined', { stream: accessLogStream, skip: (req, res) => res.statusCode < 400 }));
+// app.use(logger('combined', {
+//  stream: accessLogStream,
+//  skip: (req, res) => res.statusCode < 400
+// }));
 
 
 // setup logger and log only error responses to access.log - with log rotation
@@ -81,7 +87,7 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-// handle uncaught exceptions
+// handle uncaught exceptions - DO NOT USE
 process.on('uncaughtException', (err) => {
   error(`App crashed!! - ${(err.stack || err)}`);
 });

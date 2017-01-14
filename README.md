@@ -1,5 +1,5 @@
 # notes-app
-NodeJS application for managing notes
+Node.js application for managing notes using different data stores (in memory, filesystem, leveldb)
 
 Before installing make sure you have Node version >= 5.0 and NPM >= 3
 
@@ -14,8 +14,16 @@ cd notes-app
 # install the repo with npm
 npm install
 
+# run setup.js to setup initial environment in .env file
+npm run setup
+
 # start the server
+
 npm start
+
+# or start the server in watch mode using nodemon
+
+npm run watch
 
 ```
 go to [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your browser

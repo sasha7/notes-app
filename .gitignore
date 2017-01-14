@@ -41,5 +41,10 @@ Thumbs.db
 .idea/
 *.swp
 
+# Env files #
+.env
 
+# Project specific folders and files #
 notes-fs-data
+.notes.levelup
+
