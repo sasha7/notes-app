@@ -1,6 +1,6 @@
 {
   "name": "notes-app",
-  "description": "NodeJS simple note taking application",
+  "description": "Node.js simple note taking application",
   "keywords": [
     "node",
     "express",
@@ -15,10 +15,12 @@
   },
   "scripts": {
     "setup": "note setup.js",
-    "start": "DEBUG=notes-app:* node ./bin/www",
+    "start": "node ./bin/www",
+    "start:server2": "PORT=3001 node ./bin/www",
     "watch": "DEBUG=notes-app:* nodemon --ignore 'notes-fs-data/*.*' ./bin/www",
     "lint": "eslint .; exit 0",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "setup:sqlite3": "sqlite3 notes.sqlite3 --init models/schema-sqlite3.sql"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
@@ -33,6 +35,7 @@
     "levelup": "^1.3.3",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
+    "sqlite3": "^3.1.8",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
