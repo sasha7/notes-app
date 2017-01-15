@@ -26,7 +26,7 @@ const connectDB = () => {
     sequelz = new Sequelize(config.dbname, config.username, config.password, config.params);
 
     // Define a model
-    SQNote = sequelz.define('Note', {
+    SQNote = sequelz.define('note', {
       key: {
         type: Sequelize.STRING,
         primaryKey: true,
