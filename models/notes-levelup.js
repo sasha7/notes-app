@@ -1,7 +1,10 @@
 // LevelUp data store - a Node.js-friendly wrapper arround
-// LevelDB engine developed by Google.
+// LevelDB engine is a database library (C++) developed by Google.
+// It is an embedded database, i.e. one you use directly in your app
+// and it runs in the same process as your program.
+// The interface is a key-value store.
 // Normally used in browsers as key-value store.
-// Non-indexed, NoSQL data store. It doesn't provide indexing or querying.
+// Non-indexed, ordered key-value NoSQL data store. It doesn't provide indexing or querying.
 // IMPORTANT: LevelDB doesn't support simultaneous access to a
 // database from multiple node instances
 
@@ -69,7 +72,7 @@ exports.destroy = key => connectDB().then(() => new Promise((resolve, reject) =>
 }));
 
 exports.keylist = () => connectDB().then(() => {
-  const keys = [];
+  let keys = [];
   return new Promise((resolve, reject) => {
     // Obtain a ReadStream of the full database
     // It provides an EventEmitter style interface
