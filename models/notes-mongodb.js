@@ -16,7 +16,7 @@ const connectDB = () => new Promise((resolve, reject) => {
   MongoClient.connect(url, (err, _db) => {
     if (err) return reject(err);
     db = _db;
-    return resolve(_db);
+    resolve(_db);
   });
 });
 
@@ -67,7 +67,6 @@ exports.count = () => connectDB().then((_db) => {
     collection.count({}, (err, count) => {
       if (err) reject(err);
       else resolve(count);
-    })
+    });
   });
-
 });
