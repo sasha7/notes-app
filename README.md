@@ -1,7 +1,9 @@
 # notes-app
-Node.js application for managing notes using different data stores (in memory, filesystem, leveldb)
+Node.js application for managing notes using different data stores (in memory, filesystem, Leveldb, MYSQL, SQLite3, PostgreSQL, MongoDB)
 
 Before installing make sure you have Node version >= 5.0 and NPM >= 3
+
+You can easily switch between different data stores by changing .env variables.
 
 ```bash
 # clone our repo
