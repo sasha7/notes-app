@@ -15,7 +15,7 @@
   },
   "scripts": {
     "setup": "note setup.js",
-    "start": "node ./bin/www",
+    "start": "DEBUG=notes-app:* node ./bin/www",
     "start:server2": "PORT=3001 node ./bin/www",
     "watch": "DEBUG=notes-app:* nodemon --ignore 'notes-fs-data/*.*' ./bin/www",
     "lint": "eslint .; exit 0",
@@ -34,6 +34,7 @@
     "js-yaml": "^3.7.0",
     "leveldown": "^1.5.3",
     "levelup": "^1.3.3",
+    "mongodb": "^2.2.21",
     "morgan": "~1.7.0",
     "mysql": "^2.12.0",
     "pg": "^6.1.2",
