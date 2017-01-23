@@ -1,7 +1,0 @@
-dbname: notes
-username: postgres
-password: postgres
-params:
-  host: localhost
-  port: 5432
-  dialect: postgres

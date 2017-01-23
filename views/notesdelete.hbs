@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-xs-12">
     <form method="POST" action="/notes/destroy/confirm">
-      <input type="hidden" name="key" value="{{key}}" />
+      <input type="hidden" name="id" value="{{id}}" />
       <p>Are you sure you want to delete note <strong>{{note.title}}</strong>?</p>
       <hr />
       <button class="btn btn-danger" type="submit">DELETE</button>
-      <a class="btn btn-default" href="/notes/view/?key={{key}}">Cancel</a>
+      <a class="btn btn-default" href="/notes/view/?id={{id}}">Cancel</a>
     </form>
   </div>
 </div>

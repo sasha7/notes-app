@@ -87,9 +87,11 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-// handle uncaught exceptions - DO NOT USE
-process.on('uncaughtException', (err) => {
-  error(`App crashed!! - ${(err.stack || err)}`);
-});
+// handle uncaught exceptions - DO NOT USE IN PROD
+if (app.get('env') === 'development') {
+  process.on('uncaughtException', (err) => {
+    error(`App crashed!! - ${(err.stack || err)}`);
+  });
+}
 
 module.exports = app;

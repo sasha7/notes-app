@@ -6,12 +6,12 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="panel panel-success">
-      <div class="panel-heading">Your Notes ({{notelist.length}})</div>
+      <div class="panel-heading">Your Notes ({{notes.length}})</div>
       <div class="panel-body">
-        {{#if notelist.length }}
+        {{#if notes.length }}
         <ul class="list-group">
-          {{#each notelist}}
-          <li class="list-group-item">{{inc @index}}. <a href="/notes/view/?key={{key}}">{{title}}</a></li>
+          {{#each notes}}
+          <li class="list-group-item">{{inc @index}}. <a href="/notes/view/?id={{id}}">{{title}}</a></li>
           {{/each}}
         </ul>
         {{else}}
