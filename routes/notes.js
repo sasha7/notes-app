@@ -21,16 +21,7 @@ router.get('/view', (req, res, next) => {
       .then(note => res.render('notesview', {
         title: `Note ${note.id}`,
         note,
-        breadcrumbs: [
-          {
-            href: '/',
-            text: 'Home'
-          },
-          {
-            active: true,
-            text: note.title
-          }
-        ]
+        breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: note.title }]
       }))
       .catch(next);
   } else {
@@ -46,16 +37,7 @@ router.get('/add', (req, res, next) => {
       body: '',
       title: ''
     },
-    breadcrumbs: [
-      {
-        href: '/',
-        text: 'Home'
-      },
-      {
-        active: true,
-        text: 'Add Note'
-      }
-    ]
+    breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: 'Add Note' }]
   });
 });
 
@@ -69,16 +51,7 @@ router.get('/edit', (req, res, next) => {
         create: 0,
         id: note.id,
         note,
-        breadcrumbs: [
-          {
-            href: '/',
-            text: 'Home'
-          },
-          {
-            active: true,
-            text: `Edit Note ${note.title}`
-          }
-        ]
+        breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: `Edit Note ${note.title}` }]
       }))
       .catch(next);
   } else {
@@ -96,16 +69,7 @@ router.get('/destroy', (req, res, next) => {
           title: note.title,
           id: note.id,
           note,
-          breadcrumbs: [
-            {
-              href: '/',
-              text: 'Home'
-            },
-            {
-              active: true,
-              text: 'Delete Note'
-            }
-          ]
+          breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: 'Delete Note' }]
         });
       })
       .catch(next);
