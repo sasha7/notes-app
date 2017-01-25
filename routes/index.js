@@ -3,14 +3,13 @@ const path = require('path');
 const util = require('util');
 const log = require('debug')('notes-app:router-notes');
 const error = require('debug')('notes-app:error');
-const Note = require('../models').Note;
-
+const Note = require('../models/note');
 const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
   // Gather data about the notes that will be displayed on home page
-  Note.findAll()
+  Note.query()
     .then((notes) => {
       res.render('index', {
         title: 'Notes',
@@ -25,7 +24,7 @@ router.get('/', (req, res, next) => {
 
       util.log('notes', util.inspect(notes));
     })
-    .catch(err => next(err));
+    .catch(next);
 });
 
 module.exports = router;

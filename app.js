@@ -10,12 +10,24 @@ const rotator = require('file-stream-rotator');
 const hbsHelpers = require('./helpers/handlebars');
 const error = require('debug')('notes-app:error');
 const dotenv = require('dotenv');
+const Knex = require('knex');
+const knexConfig = require('./knexfile');
+const Model = require('objection').Model;
+const util = require('util');
 
 dotenv.load();
+
+// Initialize knex.
+const knex = Knex(knexConfig.development);
+
+// Bind all models to a knex instance (for only one database).
+// If there is more than one database, use Model.bindKnex method.
+Model.knex(knex);
 
 const index = require('./routes/index');
 const users = require('./routes/users');
 const notes = require('./routes/notes');
+
 
 const app = express();
 
@@ -60,7 +72,7 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
   skip: (req, res) => res.statusCode < 400
 }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -77,21 +89,26 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  error(`${(err.status || 500)} ${error.message}`);
+  error(`${(err.status || err.statusCode || 500)} ${err.message || err.data || {}}`);
+  // handle validation errors from Objection.js ORM
+  if (err.constructor.name === 'ValidationError') {
+    res.status(err.statusCode || err.status || 500).json(err.data || {});
+  } else {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+  }
 });
 
 // handle uncaught exceptions - DO NOT USE IN PROD
-if (app.get('env') === 'development') {
-  process.on('uncaughtException', (err) => {
-    error(`App crashed!! - ${(err.stack || err)}`);
-  });
-}
+// if (app.get('env') === 'development') {
+//   process.on('uncaughtException', (err) => {
+//     error(`App crashed!! - ${(err.stack || err)}`);
+//   });
+// }
 
 module.exports = app;

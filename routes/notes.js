@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const log = require('debug')('notes-app:router-notes');
 const error = require('debug')('notes-app:error');
-const Note = require('../models').Note;
+const Note = require('../models/note');
 const util = require('util');
 
 const router = express.Router();
@@ -16,7 +16,8 @@ const errorHelper = (msg, next) => {
 router.get('/view', (req, res, next) => {
   const id = req.query.id;
   if (id) {
-    Note.findById(id)
+    Note.query()
+      .findById(id)
       .then(note => res.render('notesview', {
         title: `Note ${note.id}`,
         note,
@@ -31,7 +32,7 @@ router.get('/view', (req, res, next) => {
           }
         ]
       }))
-      .catch(err => next(err));
+      .catch(next);
   } else {
     errorHelper('Value for query param \'id\' is missing in the URL.', next);
   }
@@ -61,7 +62,8 @@ router.get('/add', (req, res, next) => {
 router.get('/edit', (req, res, next) => {
   const id = req.query.id;
   if (id) {
-    Note.findById(id)
+    Note.query()
+      .findById(id)
       .then(note => res.render('notesedit', {
         title: 'Edit Note',
         create: 0,
@@ -78,7 +80,7 @@ router.get('/edit', (req, res, next) => {
           }
         ]
       }))
-      .catch(err => next(err));
+      .catch(next);
   } else {
     errorHelper('Value for query param \'id\' is missing in the URL.', next);
   }
@@ -87,7 +89,8 @@ router.get('/edit', (req, res, next) => {
 router.get('/destroy', (req, res, next) => {
   const id = req.query.id;
   if (id) {
-    Note.findById(id)
+    Note.query()
+      .findById(id)
       .then((note) => {
         res.render('notesdelete', {
           title: note.title,
@@ -105,7 +108,7 @@ router.get('/destroy', (req, res, next) => {
           ]
         });
       })
-      .catch(err => next(err));
+      .catch(next);
   } else {
     errorHelper('Value for query param \'id\' is missing in the URL.', next);
   }
@@ -114,13 +117,10 @@ router.get('/destroy', (req, res, next) => {
 router.post('/destroy/confirm', (req, res, next) => {
   const id = req.body.id;
   if (id) {
-    Note.destroy({
-      where: {
-        id
-      }
-    })
+    Note.query()
+      .deleteById(id)
       .then(() => res.redirect('/'))
-      .catch(err => next(err));
+      .catch(next);
   } else {
     errorHelper('Value for query param \'id\' is missing in the URL.', next);
   }
@@ -129,7 +129,8 @@ router.post('/destroy/confirm', (req, res, next) => {
 router.post('/save', (req, res, next) => {
   if (parseInt(req.body.create, 10)) {
     const body = req.body;
-    Note.create(body)
+    Note.query()
+      .insertAndFetch(body)
       .then((note) => {
         log(`MODEL UPDATE ${util.inspect(note)}`);
         res.redirect(`/notes/view/?id=${note.id}`);
@@ -138,12 +139,13 @@ router.post('/save', (req, res, next) => {
   } else {
     const id = req.body.id;
     const noteUpdate = { title: req.body.title, body: req.body.body };
-    Note.update(noteUpdate, { where: { id } })
-      .then((count) => {
-        log(`MODEL UPDATE ${util.inspect(count)}`);
-        res.redirect(`/notes/view/?id=${id}`);
+    Note.query()
+      .patchAndFetchById(id, noteUpdate)
+      .then((note) => {
+        log(`MODEL UPDATE ${util.inspect(note)}`);
+        res.redirect(`/notes/view/?id=${note.id}`);
       })
-      .catch(err => next(err));
+      .catch(next);
   }
 });
 

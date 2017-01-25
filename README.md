@@ -1,10 +1,20 @@
 # notes-app
-Node.js application for managing notes using different data stores (in memory, filesystem, Leveldb, MYSQL, SQLite3, PostgreSQL, MongoDB)
+Node.js application for managing notes.
+
+This repo serves as a playground for the following technologies:
+* Node.js
+* Express framework
+* Objection.js ORM
+* PostgresSQL
+
 
 Before installing make sure you have Node version >= 5.0 and NPM >= 3
+and that PostgreSQL has "uuid-ossp" module installed as an extension:
+* `SELECT * FROM pg_available_extensions;`
+* `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`
 
-You can easily switch between different data stores by changing .env variables.
 
+# Quick start
 ```bash
 # clone our repo
 # --depth 1 removes all but one .git commit history
@@ -18,6 +28,9 @@ npm install
 
 # run setup.js to setup initial environment in .env file
 npm run setup
+
+# create postgres db
+createdb --encoding utf8 notes-development
 
 # start the server
 

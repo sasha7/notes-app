@@ -19,8 +19,7 @@
     "start:server2": "PORT=3001 node ./bin/www",
     "watch": "DEBUG=notes-app:* nodemon --ignore 'notes-fs-data/*.*' ./bin/www",
     "lint": "eslint .; exit 0",
-    "lint:fix": "eslint . --fix",
-    "setup:sqlite3": "sqlite3 notes.sqlite3 --init models/schema-sqlite3.sql"
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
@@ -31,9 +30,11 @@
     "file-stream-rotator": "0.0.7",
     "fs-extra": "^1.0.0",
     "hbs": "~4.0.1",
+    "knex": "^0.12.6",
     "mongodb": "^2.2.21",
     "morgan": "~1.7.0",
     "mysql": "^2.12.0",
+    "objection": "^0.6.2",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "serve-favicon": "~2.3.0",
