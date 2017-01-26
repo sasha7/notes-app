@@ -16,7 +16,6 @@
   "scripts": {
     "setup": "note setup.js",
     "start": "DEBUG=notes-app:* node ./bin/www",
-    "start:server2": "PORT=3001 node ./bin/www",
     "watch": "DEBUG=notes-app:* nodemon --ignore 'notes-fs-data/*.*' ./bin/www",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix"
@@ -38,17 +37,18 @@
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "serve-favicon": "~2.3.0",
-    "sqlite3": "^3.1.8",
-    "uuid": "^3.0.1"
+    "sqlite3": "^3.1.8"
   },
   "devDependencies": {
+    "browser-sync": "^2.18.6",
     "eslint": "^3.13.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "nodemon": "^1.11.0",
-    "open": "0.0.5"
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "nodemon": "^1.11.0"
   },
   "license": "MIT",
   "bugs": {
