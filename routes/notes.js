@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const log = require('debug')('notes-app:router-notes');
 const error = require('debug')('notes-app:error');
 const Note = require('../models/note');
@@ -12,6 +11,21 @@ const errorHelper = (msg, next) => {
   err.status = 404;
   next(err);
 };
+
+router.get('/', (req, res, next) => {
+  // Gather data about the notes that will be displayed on home page
+  Note.query()
+    .then((notes) => {
+      res.render('notes', {
+        title: 'Notes',
+        notes,
+        breadcrumbs: [{ href: '/', text: 'Home' }, { href: undefined, text: 'Notes' }]
+      });
+
+      util.log('notes', util.inspect(notes));
+    })
+    .catch(next);
+});
 
 router.get('/view', (req, res, next) => {
   const id = req.query.id;

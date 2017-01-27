@@ -27,6 +27,7 @@ Model.knex(knex);
 const index = require('./routes/index');
 const users = require('./routes/users');
 const notes = require('./routes/notes');
+const login = require('./routes/login');
 
 
 const app = express();
@@ -72,13 +73,14 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
   skip: (req, res) => res.statusCode < 400
 }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/notes', notes);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

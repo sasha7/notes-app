@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        Your Notes {{#if notes.length }}({{notes.length}}){{/if}}
+        <a href="/notes/add" class="card-link card-action">Add Note</a>
+      </div>
+      <div class="card-block">
+        {{#if notes.length }}
+        <ul class="list-group list-group-flush">
+          {{#each notes}}
+          <li class="list-group-item"><a href="/notes/view/?id={{id}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p>List is currently empty.</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

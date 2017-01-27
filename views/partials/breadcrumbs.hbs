@@ -2,9 +2,9 @@
 <ol class="breadcrumb">
   {{#each breadcrumbs}}
     {{#if active}}
-    <li class="active">{{text}}</li>
+    <li class="active breadcrumb-item">{{text}}</li>
     {{else}}
-    <li><a href="{{href}}">{{text}}</a></li>
+    <li class="breadcrumb-item"><a href="{{href}}">{{text}}</a></li>
     {{/if}}
   {{/each}}
 </ol>

@@ -16,7 +16,7 @@
   "scripts": {
     "setup": "note setup.js",
     "start": "DEBUG=notes-app:* node ./bin/www",
-    "watch": "DEBUG=notes-app:* nodemon --ignore 'notes-fs-data/*.*' ./bin/www",
+    "watch": "DEBUG=notes-app:* nodemon --ignore ./bin/www",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix"
   },

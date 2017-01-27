@@ -1,16 +1,14 @@
 <div class="row">
-  <div class="col-xs-12">
-    <h2>{{note.title}}</h2>
-    <hr/>
-    <p>
-      {{note.body}}
-    </p>
-  </div>
-</div>
-<hr/>
-<div class="row">
-  <div class="col-xs-12">
-    <a class="btn btn-default" href="/notes/edit/?id={{note.id}}">Edit</a>
-    <a class="btn btn-danger" href="/notes/destroy/?id={{note.id}}">Delete</a>
+  <div class="col col-xs-12 col-md-12 col-lg-8">
+    <div class="card">
+      <div class="card-block">
+        <h4 class="card-title">{{note.title}}</h4>
+        <p class="card-text">{{note.body}}</p>
+      </div>
+      <div class="card-footer text-right">
+        <a class="btn btn-primary" href="/notes/edit/?id={{note.id}}">Edit</a>
+        <a class="btn btn-danger" href="/notes/destroy/?id={{note.id}}">Delete</a>
+      </div>
+    </div>
   </div>
 </div>

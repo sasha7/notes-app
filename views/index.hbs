@@ -2,22 +2,3 @@
   <h3>Welcome!</h3>
   <p>Organize all your notes, everywhere you are.</p>
 </div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <div class="panel panel-success">
-      <div class="panel-heading">Your Notes ({{notes.length}})</div>
-      <div class="panel-body">
-        {{#if notes.length }}
-        <ul class="list-group">
-          {{#each notes}}
-          <li class="list-group-item">{{inc @index}}. <a href="/notes/view/?id={{id}}">{{title}}</a></li>
-          {{/each}}
-        </ul>
-        {{else}}
-        <p>List is currently empty. <strong><a href="/notes/add">Add a new note</a><strong/>.</p>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-</div>
