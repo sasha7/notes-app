@@ -49,3 +49,6 @@ notes-fs-data
 notes.levelup
 
 *.sqlite3
+
+// Express sessions
+sessions

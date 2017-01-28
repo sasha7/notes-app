@@ -16,7 +16,7 @@
   "scripts": {
     "setup": "note setup.js",
     "start": "DEBUG=notes-app:* node ./bin/www",
-    "watch": "DEBUG=notes-app:* nodemon --ignore ./bin/www",
+    "watch": "DEBUG=notes-app:* nodemon --ignore ./bin/www --ignore sessions/ --ignore logs/",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix"
   },
@@ -26,6 +26,8 @@
     "debug": "~2.2.0",
     "dotenv": "^4.0.0",
     "express": "~4.14.0",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.0",
     "file-stream-rotator": "0.0.7",
     "fs-extra": "^1.0.0",
     "hbs": "~4.0.1",
@@ -34,9 +36,12 @@
     "morgan": "~1.7.0",
     "mysql": "^2.12.0",
     "objection": "^0.6.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "serve-favicon": "~2.3.0",
+    "session-file-store": "^1.0.0",
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {
