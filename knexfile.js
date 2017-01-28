@@ -1,53 +1,21 @@
 // Update with your config settings.
+//
+const dotenv = require('dotenv');
+
+dotenv.load({ path: '.env'});
 
 module.exports = {
-
-  development: {
-    client: 'postgresql',
-    connection: {
-      database: 'notes_development',
-      user: 'postgres',
-      password: 'postgres'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+  client: process.env.DB_CLIENT,
+  connection: {
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
   },
-
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'notes_staging',
-      user: 'postgres',
-      password: 'postgres'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+  pool: {
+    min: 2,
+    max: 10
   },
-
-  production: {
-    client: 'postgresql',
-    connection: {
-      database: 'notes_development',
-      user: 'postgres',
-      password: 'postgres'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+  migrations: {
+    tableName: 'knex_migrations'
   }
-
 };
