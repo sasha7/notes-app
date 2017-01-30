@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local');
 const User = require('../models/user');
 const authenticationMiddleware = require('./middleware');
 const log = require('debug')('notes-app:auth');
+const error = require('debug')('notes-app:error');
 
 // Encoding and decoding authentication data for the session
 passport.serializeUser((user, done) => {
@@ -28,17 +29,15 @@ const initPassport = () => {
         .where('username', username)
         .first()
         .then((user) => {
-          log('AUTH USR: ', user);
           if (!user) {
             return done(null, false, { message: 'User does not exist!' });
           }
 
-          // implement as a method inside User model
-          if (password === user.password) {
-            done(null, user);
-          } else {
-            done(null, false, { message: 'Password is incorrect!' });
+          if (!User.checkPassword(password, user.password)) {
+            return done(null, false, { message: 'Password is incorrect!' });
           }
+
+          return done(null, user);
         })
         .catch(done);
     }
