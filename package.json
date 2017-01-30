@@ -17,9 +17,12 @@
     "setup": "note setup.js",
     "start": "DEBUG=notes-app:* node ./bin/www",
     "watch": "DEBUG=notes-app:* nodemon ./bin/www -e js,hbs,json --ignore node_modules/ --ignore sessions/ --ignore logs/",
-    "lint": "eslint .; exit 0",
-    "lint:fix": "eslint . --fix"
+    "eslint": "./node_modules/.bin/eslint .",
+    "eslint:fix": "./node_modules/.bin/eslint . --fix"
   },
+  "pre-commit": [
+    "eslint"
+  ],
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "body-parser": "~1.15.2",
@@ -60,7 +63,8 @@
     "eslint-plugin-react": "^6.9.0",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2"
   },
   "license": "MIT",
   "bugs": {
