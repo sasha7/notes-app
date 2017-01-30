@@ -2,7 +2,7 @@
 //
 const dotenv = require('dotenv');
 
-dotenv.load({ path: '.env'});
+dotenv.load();
 
 module.exports = {
   client: process.env.DB_CLIENT,
