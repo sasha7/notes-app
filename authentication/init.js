@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('../models/user');
 const authenticationMiddleware = require('./middleware');
+const util = require('util');
 const log = require('debug')('notes-app:auth');
 const error = require('debug')('notes-app:error');
 
@@ -13,35 +14,36 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((userId, done) => {
   User.query()
     .findById(userId)
-    .then(user => done(null, user))
-    .catch(done);
+    .then(user => done(null, user));
 });
 
 const initPassport = () => {
   // Set local authentication strategy
-  passport.use(
-    new LocalStrategy({
-      usernameField: 'username',
-      passwordField: 'password'
-    },
-    (username, password, done) => {
-      User.query()
-        .where('username', username)
-        .first()
-        .then((user) => {
-          if (!user) {
-            return done(null, false, { message: 'User does not exist!' });
-          }
+  passport.use('local',
+    new LocalStrategy(
+      {
+        usernameField: 'username',
+        passwordField: 'password'
+      },
+      (username, password, done) => {
+        User.query()
+          .where('username', username)
+          .first()
+          .then((user) => {
+            if (!user) {
+              return done(null, false, { message: 'User does not exist!' });
+            }
 
-          if (!User.checkPassword(password, user.password)) {
-            return done(null, false, { message: 'Password is incorrect!' });
-          }
+            if (!User.checkPassword(password, user.password)) {
+              return done(null, false, { message: 'Password is incorrect!' });
+            }
 
-          return done(null, user);
-        })
-        .catch(done);
-    }
-  ));
+            return done(null, user);
+          })
+          .catch(done);
+      }
+    )
+  );
 };
 
 module.exports = initPassport;
