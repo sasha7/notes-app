@@ -24,19 +24,19 @@ const helpers = require('./lib/helpers');
 const parseUniqueViolationError = helpers.parseUniqueViolationError;
 const isPostgresError = helpers.isPostgresError;
 const methodOverride = require('method-override');
+const PgError = require('pg-error');
 
-// Routes and Controllers
+// Controllers
 const homeController = require('./controllers/home.controller');
 const authController = require('./controllers/auth.controller');
-const usersRoutes = require('./routes/users');
-const notesRoutes = require('./routes/notes');
-const apiRoutes = require('./routes/api');
+
+// Routes
+const notesRoutes = require('./routes/notes'); // Notes CRUD pages
+const apiRoutes = require('./routes/api'); // RESTFul API /api/v1/[resource]
 
 dotenv.load();
 
-// Initialize database connection.
 const knex = Knex(knexConfig);
-
 // Bind all models to a knex instance (for only one database).
 // If there is more than one database, use Model.bindKnex method.
 Model.knex(knex);
@@ -105,7 +105,6 @@ app.get('/logout', authController.logoutGet);
 
 app.use('/api/v1', apiRoutes);
 app.use('/notes', [ensureAuthenticated], notesRoutes);
-app.use('/users', [ensureAuthenticated], usersRoutes);
 
 
 // catch 404 and forward to error handler
@@ -115,31 +114,54 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// error handler
+// general error handler
 app.use((err, req, res, next) => {
   error(`${(err.status || err.statusCode || 500)} ${err.message || err.data || {}}`);
+  error(`DB ERROR ${util.inspect(err)}`);
 
   // Handle validation errors from Objection.js ORM
   if (err.constructor.name === 'ValidationError') {
-    error('ORM VALIDATION ERRORS');
+    error('ORM VALIDATION ERROR');
     res.status(err.statusCode || err.status || 500).json({
-      errors: err.data || {}
+      error: {
+        code: 'VALIDATION-ERROR',
+        http_code: err.statusCode,
+        message: err.data || {}
+      }
     });
-  } else if (isPostgresError(err)) {
-    // Handle errors from the Postgresql database ()
-    error('DATABASE ERROR');
-    const uniqueViolationErrors = parseUniqueViolationError(err);
+  } else if (err instanceof PgError) {
+    // Handle errors from the Postgresql database
+    error('PG DB ERROR');
+    // Other approach: if (isPostgresError(err)) ..
+    // const uniqueViolationErrors = parseUniqueViolationError(err);
     res.status(400).json({
-      errors: uniqueViolationErrors || {}
+      error: {
+        code: 'BAD-REQUEST',
+        http_code: 400,
+        message: err.detail
+      }
     });
   } else { // Render 500 error as a html page
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
     res.status(err.status || 500);
-    res.render('error');
+
+    if (req.url.indexOf('api') >= 0) {
+      res.json({
+        error: {
+          code: 'NOT-FOUND',
+          http_code: 404,
+          message: 'Not Found'
+        }
+      });
+    } else {
+      // render the error page
+      res.render('error');
+    }
+
+    // res.status(err.status || 500);
+
   }
 });
 
