@@ -1,130 +1,29 @@
+// Routes: Note resource - CRUD
+// Defined routes which associate URLs with controller actions.
+
+// RequestType   Path                           Action
+// ===================================================================
+// GET           /notes                         noteController.index
+// GET           /notes/create                  noteController.create
+// POST          /notes/store                   noteController.store
+// GET           /notes/{note}                  noteController.show
+// GET           /notes/{note}/edit             noteController.edit
+// PUT/PATCH     /notes/{note}                  noteController.update
+// GET           /notes/{note}/confirm-destroy  noteController.confirm
+// DELETE        /notes/{note}                  noteController.destroy
+
 const express = require('express');
-const log = require('debug')('notes-app:router-notes');
-const error = require('debug')('notes-app:error');
-const Note = require('../models/note');
-const util = require('util');
-
 const router = express.Router();
+const noteController = require('../controllers/note.controller');
 
-const errorHelper = (msg, next) => {
-  const err = new Error(msg);
-  err.status = 404;
-  next(err);
-};
-
-router.get('/', (req, res, next) => {
-  // Gather data about the notes that will be displayed on home page
-  Note.query()
-    .then((notes) => {
-      res.render('notes', {
-        title: 'Notes',
-        notes,
-        breadcrumbs: [{ href: '/', text: 'Home' }, { href: undefined, text: 'Notes' }]
-      });
-
-      util.log('notes', util.inspect(notes));
-    })
-    .catch(next);
-});
-
-router.get('/view', (req, res, next) => {
-  const id = req.query.id;
-  if (id) {
-    Note.query()
-      .findById(id)
-      .then(note => res.render('notesview', {
-        title: `Note ${note.id}`,
-        note,
-        breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: note.title }]
-      }))
-      .catch(next);
-  } else {
-    errorHelper('Value for query param \'id\' is missing in the URL.', next);
-  }
-});
-
-router.get('/add', (req, res, next) => {
-  res.render('notesedit', {
-    title: 'Add a note',
-    create: 1,
-    note: {
-      body: '',
-      title: ''
-    },
-    breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: 'Add Note' }]
-  });
-});
-
-router.get('/edit', (req, res, next) => {
-  const id = req.query.id;
-  if (id) {
-    Note.query()
-      .findById(id)
-      .then(note => res.render('notesedit', {
-        title: 'Edit Note',
-        create: 0,
-        id: note.id,
-        note,
-        breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: `Edit Note ${note.title}` }]
-      }))
-      .catch(next);
-  } else {
-    errorHelper('Value for query param \'id\' is missing in the URL.', next);
-  }
-});
-
-router.get('/destroy', (req, res, next) => {
-  const id = req.query.id;
-  if (id) {
-    Note.query()
-      .findById(id)
-      .then((note) => {
-        res.render('notesdelete', {
-          title: note.title,
-          id: note.id,
-          note,
-          breadcrumbs: [{ href: '/', text: 'Home' }, { active: true, text: 'Delete Note' }]
-        });
-      })
-      .catch(next);
-  } else {
-    errorHelper('Value for query param \'id\' is missing in the URL.', next);
-  }
-});
-
-router.post('/destroy/confirm', (req, res, next) => {
-  const id = req.body.id;
-  if (id) {
-    Note.query()
-      .deleteById(id)
-      .then(() => res.redirect('/'))
-      .catch(next);
-  } else {
-    errorHelper('Value for query param \'id\' is missing in the URL.', next);
-  }
-});
-
-router.post('/save', (req, res, next) => {
-  if (parseInt(req.body.create, 10)) {
-    const body = req.body;
-    Note.query()
-      .insertAndFetch(body)
-      .then((note) => {
-        log(`MODEL UPDATE ${util.inspect(note)}`);
-        res.redirect(`/notes/view/?id=${note.id}`);
-      })
-      .catch(err => next(err));
-  } else {
-    const id = req.body.id;
-    const noteUpdate = { title: req.body.title, body: req.body.body };
-    Note.query()
-      .patchAndFetchById(id, noteUpdate)
-      .then((note) => {
-        log(`MODEL UPDATE ${util.inspect(note)}`);
-        res.redirect(`/notes/view/?id=${note.id}`);
-      })
-      .catch(next);
-  }
-});
+router.get('/', noteController.index);
+router.get('/create', noteController.create);
+router.post('/store', noteController.store);
+router.get('/:id', noteController.show);
+router.get('/:id/edit', noteController.edit);
+router.put('/:id', noteController.update);
+router.patch('/:id', noteController.update);
+router.get('/:id/confirm-destroy', noteController.showConfirmDestroy);
+router.delete('/:id', noteController.destroy);
 
 module.exports = router;

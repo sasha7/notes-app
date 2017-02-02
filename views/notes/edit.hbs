@@ -1,14 +1,6 @@
 <div class="row">
   <div class="col col-xs-12 col-md-6 col-lg-6">
-    <form method="POST" action="/notes/save">
-      <input type="hidden" name="create" value="{{create}}" />
-
-      {{#unless create}}
-      <div class="form-group">
-        <label for="id">Key {{id}}</label>
-        <input type="hidden" name="id" value="{{id}}" />
-      </div>
-      {{/unless}}
+    <form method="POST" action="/notes/{{id}}/?_method=PATCH">
 
       <div class="form-group">
         <label for="title">Title</label>
@@ -19,8 +11,7 @@
         <textarea required class="form-control" placeholder="Enter a note..." name="body" cols="40" rows="10">{{note.body}}</textarea>
       </div>
 
-
-      <p><button class="btn btn-default" type="submit">Submit</button></p>
+      <p><button class="btn btn-primary" type="submit">Save</button></p>
     </form>
   </div>
 </div>

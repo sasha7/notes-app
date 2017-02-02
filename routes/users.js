@@ -22,7 +22,6 @@ router.get('/:id', (req, res, next) => {
     .then(user => res.status(200).json(user))
     .catch(next);
 });
-
 // Create new user
 router.post('/', (req, res, next) => {
   const data = req.body;

@@ -6,8 +6,8 @@
         <p class="card-text">{{note.body}}</p>
       </div>
       <div class="card-footer text-right">
-        <a class="btn btn-primary" href="/notes/edit/?id={{note.id}}">Edit</a>
-        <a class="btn btn-danger" href="/notes/destroy/?id={{note.id}}">Delete</a>
+        <a class="btn btn-primary" href="/notes/{{note.id}}/edit">Edit</a>
+        <a class="btn btn-danger" href="/notes/{{note.id}}/confirm-destroy">Delete</a>
       </div>
     </div>
   </div>
