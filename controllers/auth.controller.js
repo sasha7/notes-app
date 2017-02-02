@@ -4,7 +4,8 @@ const loginGet = (req, res, next) => {
   res.render('account/login', {
     layout: 'account',
     title: 'Login',
-    error: req.flash('error')
+    error: req.flash('error'),
+    info: req.flash('info')
   });
 };
 

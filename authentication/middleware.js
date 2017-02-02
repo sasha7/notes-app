@@ -7,6 +7,7 @@
 const ensureAuthenticated = (req, res, next) => {
   // isAuthenticated is set by `deserializeUser()`
   if (!req.isAuthenticated || !req.isAuthenticated()) {
+    req.flash('info', 'Please log in.');
     res.redirect('/login');
     // res.status(401).send({
     //   success: false,
