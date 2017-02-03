@@ -26,15 +26,15 @@ const router = express.Router();
 const noteApiController = require('../controllers/noteApi.controller');
 const userApiController = require('../controllers/userApi.controller');
 
-router.get('/notes/', noteApiController.index);
-router.post('/notes/', noteApiController.store);
+router.get('/notes', noteApiController.index);
+router.post('/notes', noteApiController.store);
 router.get('/notes/:id', noteApiController.show);
 router.put('/notes/:id', noteApiController.update);
 router.patch('/notes/:id', noteApiController.update);
 router.delete('/notes/:id', noteApiController.destroy);
 
-router.get('/users/', userApiController.index);
-router.post('/users/', userApiController.store);
+router.get('/users', userApiController.index);
+router.post('/users', userApiController.store);
 router.get('/users/:id', userApiController.show);
 router.put('/users/:id', userApiController.update);
 router.patch('/users/:id', userApiController.update);

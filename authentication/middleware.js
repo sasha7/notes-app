@@ -80,9 +80,7 @@ const ensureAuthenticatedRedirect = (options) => {
  * @return {Function}
  */
 const ensureAuthenticatedJSON = () => {
-  const MESSAGE_401 =
-    `The request has not been applied because it lacks valid
-    authentication credentials for the target resource.`;
+  const MESSAGE_401 = 'Not authorized.';
 
   return (req, res, next) => {
     // check if a user is authenticated

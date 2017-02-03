@@ -22,6 +22,7 @@ class User extends Model {
         password: { type: 'string' },
         email: { type: 'string', format: 'email', maxLength: 30 },
         first_name: { type: 'string', minLength: 1, maxLength: 40 },
+        last_name: { type: 'string', minLength: 1, maxLength: 40 },
         username: { type: 'string', minLength: 2, maxLength: 30 }
       }
     };
@@ -44,7 +45,7 @@ class User extends Model {
   }
 
   $beforeUpdate(opt, queryContext) {
-    log(`QUERY CONTEXT USER MODEL UPDT: ${util.inspect(queryContext)}`);
+    log(`QUERY CONTEXT USER MODEL UPDT: ${util.inspect(opt)}`);
 
     this.updated_at = new Date().toISOString();
     this.password = makeHash(this.password);

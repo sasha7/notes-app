@@ -20,27 +20,22 @@ passport.deserializeUser((userId, done) => {
 const initPassport = () => {
   // Set local authentication strategy
   passport.use('local',
-    new LocalStrategy(
-      {
-        usernameField: 'username',
-        passwordField: 'password'
-      },
-      (username, password, done) => {
+    new LocalStrategy({ usernameField: 'email', passwordField: 'password', passReqToCallback: true },
+      (req, email, password, done) => {
         User.query()
-          .where('username', username)
+          .where('email', email)
           .first()
           .then((user) => {
             if (!user) {
-              return done(null, false, { message: 'User does not exist!' });
+              return done(null, false, { message: 'Invalid username or password' });
             }
-
             if (!User.checkPassword(password, user.password)) {
-              return done(null, false, { message: 'Password is incorrect!' });
+              return done(null, false, { message: 'Invalid username or password' });
             }
-
-            return done(null, user);
+            delete req.session.oldUsername;
+            return done(null, user, { message: 'Invalid username or password' });
           })
-          .catch(done);
+          .catch(err => done(null, false, { message: 'Invalid username or password' }));
       }
     )
   );

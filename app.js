@@ -38,12 +38,9 @@ const apiRoutes = require('./routes/api'); // RESTFul API /api/v1/[resource]
 
 dotenv.load();
 
-
 const cookieExpirationDate = new Date();
 const cookieExpirationDays = 1;
 cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
-
-log(`SESSION VALID UNTIL: ${cookieExpirationDate}`);
 
 const knex = Knex(knexConfig);
 // Bind all models to a knex instance (for only one database).
@@ -116,7 +113,7 @@ app.get('/login', authController.loginGet);
 app.post('/login', authController.loginPost);
 app.get('/logout', authController.logoutGet);
 
-app.use('/api/v1', ensureAuthenticatedJSON(), apiRoutes);
+app.use('/api/v1', apiRoutes);
 app.use('/notes', ensureAuthenticatedRedirect(), notesRoutes);
 
 

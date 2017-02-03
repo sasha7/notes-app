@@ -56,10 +56,10 @@ const store = (req, res, next) => {
  */
 const update = (req, res, next) => {
   const id = req.params.id;
-  const obj = { title: req.body.title, body: req.body.body };
+  const data = req.body;
 
   User.query()
-    .patchAndFetchById(id, obj)
+    .patchAndFetchById(id, data)
     .then(user => res.json(user))
     .catch(next);
 };
