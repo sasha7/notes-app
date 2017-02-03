@@ -9,6 +9,7 @@ const expressHbs = require('express-handlebars');
 const fs = require('fs');
 const hbsConfig = require('./config/handlebars');
 const error = require('debug')('notes-app:error');
+const log = require('debug')('notes-app:main');
 const dotenv = require('dotenv');
 const Knex = require('knex');
 const knexConfig = require('./knexfile');
@@ -18,7 +19,8 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const passport = require('passport');
 const authentication = require('./authentication');
-const ensureAuthenticated = authentication.middleware;
+const ensureAuthenticatedRedirect = authentication.middleware.ensureAuthenticatedRedirect;
+const ensureAuthenticatedJSON = authentication.middleware.ensureAuthenticatedJSON;
 const expressValidator = require('express-validator');
 const helpers = require('./lib/helpers');
 const parseUniqueViolationError = helpers.parseUniqueViolationError;
@@ -35,6 +37,13 @@ const notesRoutes = require('./routes/notes'); // Notes CRUD pages
 const apiRoutes = require('./routes/api'); // RESTFul API /api/v1/[resource]
 
 dotenv.load();
+
+
+const cookieExpirationDate = new Date();
+const cookieExpirationDays = 1;
+cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
+
+log(`SESSION VALID UNTIL: ${cookieExpirationDate}`);
 
 const knex = Knex(knexConfig);
 // Bind all models to a knex instance (for only one database).
@@ -63,8 +72,8 @@ if (app.get('env') === 'development') {
 
 app.use(favicon(path.join(__dirname, 'public', 'img/favicon.ico')));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.SECRET_KEY));
 
 // An express.js middleware for node-validator.
 app.use(expressValidator());
@@ -81,7 +90,11 @@ app.use(session({
   store: new FileStore({ path: './sessions' }),
   secret: process.env.SECRET_KEY,
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: cookieExpirationDate // use expires instead of maxAge
+  }
 }));
 
 // Use flash messages
@@ -103,8 +116,8 @@ app.get('/login', authController.loginGet);
 app.post('/login', authController.loginPost);
 app.get('/logout', authController.logoutGet);
 
-app.use('/api/v1', apiRoutes);
-app.use('/notes', [ensureAuthenticated], notesRoutes);
+app.use('/api/v1', ensureAuthenticatedJSON(), apiRoutes);
+app.use('/notes', ensureAuthenticatedRedirect(), notesRoutes);
 
 
 // catch 404 and forward to error handler
@@ -117,7 +130,6 @@ app.use((req, res, next) => {
 // general error handler
 app.use((err, req, res, next) => {
   error(`${(err.status || err.statusCode || 500)} ${err.message || err.data || {}}`);
-  error(`DB ERROR ${util.inspect(err)}`);
 
   // Handle validation errors from Objection.js ORM
   if (err.constructor.name === 'ValidationError') {
@@ -151,7 +163,7 @@ app.use((err, req, res, next) => {
       res.json({
         error: {
           code: 'NOT-FOUND',
-          http_code: 404,
+          http_code: err.status || 500,
           message: 'Not Found'
         }
       });
@@ -159,9 +171,7 @@ app.use((err, req, res, next) => {
       // render the error page
       res.render('error');
     }
-
     // res.status(err.status || 500);
-
   }
 });
 
