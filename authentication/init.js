@@ -18,6 +18,7 @@ passport.deserializeUser((userId, done) => {
 });
 
 const initPassport = () => {
+  const LOGIN_FAILED_MESSAGE = 'Invalid username or password';
   // Set local authentication strategy
   passport.use('local',
     new LocalStrategy({ usernameField: 'email', passwordField: 'password', passReqToCallback: true },
@@ -27,15 +28,15 @@ const initPassport = () => {
           .first()
           .then((user) => {
             if (!user) {
-              return done(null, false, { message: 'Invalid username or password' });
+              return done(null, false, { message: LOGIN_FAILED_MESSAGE });
             }
             if (!User.checkPassword(password, user.password)) {
-              return done(null, false, { message: 'Invalid username or password' });
+              return done(null, false, { message: LOGIN_FAILED_MESSAGE });
             }
-            delete req.session.oldUsername;
-            return done(null, user, { message: 'Invalid username or password' });
+            delete req.session.previousLoginAttempt;
+            return done(null, user, { message: LOGIN_FAILED_MESSAGE });
           })
-          .catch(err => done(null, false, { message: 'Invalid username or password' }));
+          .catch(err => done(null, false, { message: LOGIN_FAILED_MESSAGE }));
       }
     )
   );

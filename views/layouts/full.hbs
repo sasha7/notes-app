@@ -24,7 +24,7 @@
 
 </head>
 
-<body class="background-green">
+<body class="{{#ifeq background 'belize' }}background-belize{{/ifeq}} {{#ifeq background 'green' }}background-green{{/ifeq}}">
   <div class="container-fluid" role="main">
     {{{body}}}
   </div>

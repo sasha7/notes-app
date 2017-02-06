@@ -23,15 +23,15 @@
             {{else}}
             <img class="user-image-small" src="{{user.avatar}}">
             {{/if}}
-            {{#if user.username}}
-            {{user.username}}
+            {{#if user.first_name}}
+            {{user.first_name}}
             {{else}}
             {{user.email}}
             {{/if}}
             <i class="caret"></i>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/my-profile">My Profile</a></li>
+            <li><a href="/profile">My Profile</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Logout</a></li>
           </ul>

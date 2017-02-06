@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="login-container">
+      <div class="login-header fade-in">
+        <a href="/" title="Notes home page"><img src="img/icons/svg/clipboard.svg" alt="Notes-App"></a>
+        <h3>Notes App Signup
+          <small>Organize all your notes, everywhere you are.</small>
+        </h3>
+      </div>
+      <div class="login-form">
+        {{> notifications}}
+        <form action="/signup" method="POST">
+          <div class="form-group">
+            <input name="email" type="text" class="form-control login-field" value="{{previousSignupAttempt.email}}"
+                   placeholder="Enter your email" id="login-name">
+            <label class="login-field-icon fui-user" for="email"></label>
+          </div>
+          <div class="form-group">
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password"
+                   id="login-pass-cofirm">
+            <label class="login-field-icon fui-lock" for="password"></label>
+          </div>
+          <div class="form-group">
+            <input name="password_confirm" type="password" class="form-control login-field" value=""
+                   placeholder="Confirm Password" id="login-pass-confirm">
+            <label class="login-field-icon fui-lock" for="password_confirm"></label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
+          <a class="login-link" href="/login">Already signed up? Log in here.</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

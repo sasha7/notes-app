@@ -16,14 +16,20 @@ class User extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['username', 'email'],
+      required: ['email'],
       properties: {
         id: { type: 'string' },
         password: { type: 'string' },
         email: { type: 'string', format: 'email', maxLength: 30 },
         first_name: { type: 'string', minLength: 1, maxLength: 40 },
-        last_name: { type: 'string', minLength: 1, maxLength: 40 },
-        username: { type: 'string', minLength: 2, maxLength: 30 }
+        last_name: { type: 'string', maxLength: 40 },
+        gender: { type: 'string' },
+        picture: { type: 'string', maxLength: 100 },
+        website: { type: 'string', maxLength: 40 },
+        location: { type: 'string', maxLength: 40 },
+        facebook: { type: 'string' },
+        twitter: { type: 'string' },
+        google: { type: 'string' }
       }
     };
   }
@@ -39,16 +45,15 @@ class User extends Model {
   }
 
   $beforeInsert(queryContext) {
-    log(`QUERY CONTEXT USER MODEL INSRT: ${util.inspect(queryContext)}`);
     this.created_at = new Date().toISOString();
     this.password = makeHash(this.password);
   }
 
   $beforeUpdate(opt, queryContext) {
-    log(`QUERY CONTEXT USER MODEL UPDT: ${util.inspect(opt)}`);
-
     this.updated_at = new Date().toISOString();
-    this.password = makeHash(this.password);
+    if (this.password) {
+      this.password = makeHash(this.password);
+    }
   }
 
   static checkPassword(password, hash) {

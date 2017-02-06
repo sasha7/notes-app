@@ -30,7 +30,7 @@ const PgError = require('pg-error');
 
 // Controllers
 const homeController = require('./controllers/home.controller');
-const authController = require('./controllers/auth.controller');
+const accountController = require('./controllers/account.controller');
 
 // Routes
 const notesRoutes = require('./routes/notes'); // Notes CRUD pages
@@ -108,14 +108,22 @@ app.use((req, res, next) => {
 });
 
 // Register app routes
+
+// WITHOUT authentication
 app.get('/', homeController.index);
-app.get('/login', authController.loginGet);
-app.post('/login', authController.loginPost);
-app.get('/logout', authController.logoutGet);
+app.get('/login', accountController.loginGet);
+app.post('/login', accountController.loginPost);
+app.get('/logout', accountController.logoutGet);
+app.get('/signup', accountController.signupGet);
+app.post('/signup', accountController.signupPost);
 
-app.use('/api/v1', apiRoutes);
+// WITH authentication
+app.get('/profile', ensureAuthenticatedRedirect(), accountController.profileGet);
+app.put('/profile', ensureAuthenticatedRedirect(), accountController.profilePut);
+app.put('/change_password', ensureAuthenticatedRedirect(), accountController.changePassword);
+app.delete('/profile', ensureAuthenticatedRedirect(), accountController.profileDelete);
 app.use('/notes', ensureAuthenticatedRedirect(), notesRoutes);
-
+app.use('/api/v1', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -143,13 +151,18 @@ app.use((err, req, res, next) => {
     error('PG DB ERROR');
     // Other approach: if (isPostgresError(err)) ..
     // const uniqueViolationErrors = parseUniqueViolationError(err);
-    res.status(400).json({
-      error: {
-        code: 'BAD-REQUEST',
-        http_code: 400,
-        message: err.detail
-      }
-    });
+    //
+    if (req.url.indexOf('api') >= 0) {
+      res.status(400).json({
+        error: {
+          code: 'BAD-REQUEST',
+          http_code: 400,
+          message: err.detail
+        }
+      });
+    } else {
+      res.render('error');
+    }
   } else { // Render 500 error as a html page
     // set locals, only providing error in development
     res.locals.message = err.message;

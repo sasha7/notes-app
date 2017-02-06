@@ -24,14 +24,16 @@
 
 </head>
 
-<body>
+<body class="{{#ifeq background 'belize' }}background-belize{{/ifeq}} {{#ifeq background 'green' }}background-green{{/ifeq}}">
   {{>navigation}}
   <div class="container" role="main">
+    {{> notifications}}
     {{{body}}}
   </div>
 
 <script src="/js/vendor/jquery.min.js"></script>
 <script src="/js/flat-ui.min.js"></script>
+<script src="/js/application.js"></script>
 
 </body>
 

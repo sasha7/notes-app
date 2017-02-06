@@ -2,7 +2,7 @@
   min-width: 280px;
   max-width: 450px;
   margin: 0 auto;
-  padding-top: 5rem;
+  padding-top: 1rem;
 }
 
 .login-form .has-error .login-field {
@@ -14,7 +14,7 @@
 }
 
 .login-header img {
-  width: 200px;
+  width: 150px;
 }
 
 .login-header h3 {
@@ -27,7 +27,7 @@
 
 @media (max-width: 768px) {
   .login-header img {
-    width: 130px;
+    width: 100px;
     margin-bottom: 4px;
   }
 
@@ -62,10 +62,15 @@
   background-color: #1abc9c;
 }
 
+.background-belize {
+  background-color: #3498db;
+}
+
 
 .user-image-small {
   max-width: 21px!important;
   border-radius: 500rem;
+  vertical-align: -5px;
 }
 
 @keyframes fadeIn {
@@ -79,4 +84,11 @@
   -moz-animation: fadeIn ease-out 0.5s;
   -o-animation: fadeIn ease-out 0.5s;
   -ms-animation: fadeIn ease-out 0.5s;
+}
+
+.radio-inline {
+  vertical-align: -3px;
+  margin-left: 0px;
+  padding-right:14px;
+  padding-left:25px;
 }
