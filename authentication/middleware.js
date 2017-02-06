@@ -54,7 +54,7 @@ const ensureAuthenticatedRedirect = (options) => {
     if (req.isAuthenticated()) {
       next();
     } else {
-      req.flash('info', flashMessage);
+      req.flash('info', { msg: flashMessage });
       if (setReturnTo && req.session) {
         req.session.returnTo = req.originalUrl || req.url;
       }

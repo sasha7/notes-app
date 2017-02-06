@@ -1,6 +1,7 @@
 const Model = require('objection').Model;
 const log = require('debug')('notes-app:notes-model');
 const util = require('util');
+const modelEvents = require('./model_events');
 
 class Note extends Model {
 
@@ -29,6 +30,19 @@ class Note extends Model {
     this.updated_at = new Date().toISOString();
   }
 
+  $afterInsert(queryContext) {
+    modelEvents.created('note', this.toJSON());
+  }
+
+  $afterUpdate(queryContext) {
+    modelEvents.updated('note', this.toJSON());
+  }
+
+  $afterDelete(queryContext) {
+    modelEvents.deleted('note', this.toJSON());
+  }
+
 }
 
 module.exports = Note;
+module.exports.events = modelEvents;

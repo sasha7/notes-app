@@ -7,7 +7,7 @@
       </div>
       <div class="card-block">
         {{#if notes.length }}
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" id="notes-list">
           {{#each notes}}
           <li class="list-group-item"><a href="/notes/{{id}}">{{title}}</a></li>
           {{/each}}

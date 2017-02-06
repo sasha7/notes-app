@@ -1,5 +1,6 @@
 const Note = require('../models/note');
 const HttpError = require('../lib/helpers').HttpError;
+const error = require('debug')('notes-app:note-controller-error');
 
 /**
  * Display a listing of the resource.
@@ -148,9 +149,35 @@ const destroy = (req, res, next) => {
   }
 
   Note.query()
-    .deleteById(id)
-    .then(res.redirect('/notes'))
+    .findById(id)
+    .then((note) => {
+      const noteTitle = note.title;
+      note.$query()
+        .delete()
+        .then((numOfDeletedRows) => {
+          req.flash('info', { msg: `Note ${noteTitle} was deleted successfuly.` });
+          res.redirect('/notes');
+        })
+        .catch(next);
+    })
     .catch(next);
+};
+
+const registerSocketio = (io) => {
+
+  const getAndEmitNotes = () => {
+    Note.query()
+      .select('id', 'title')
+      .then((notes) => {
+        io.of('/notes').emit('refresh-list', { list: notes });
+      })
+      .catch(error);
+  };
+
+  // Connect Model EventEmitter with Socket.io
+  Note.events.on('note:created', getAndEmitNotes);
+  Note.events.on('note:updated', getAndEmitNotes);
+  Note.events.on('note:deleted', getAndEmitNotes);
 };
 
 // Controller with all of the typical CRUD actions.
@@ -162,7 +189,8 @@ const NoteController = {
   edit,
   update,
   showConfirmDestroy,
-  destroy
+  destroy,
+  registerSocketio
 };
 
 module.exports = NoteController;

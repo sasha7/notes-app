@@ -27,3 +27,4 @@ router.get('/:id/confirm-destroy', noteController.showConfirmDestroy);
 router.delete('/:id', noteController.destroy);
 
 module.exports = router;
+module.exports.socketio = noteController.registerSocketio;

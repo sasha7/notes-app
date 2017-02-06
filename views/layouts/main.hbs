@@ -18,21 +18,22 @@
 
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
   <!--[if lt IE 9]>
-    <script src="/js/vendor/html5shiv.js"></script>
-    <script src="/js/vendor/respond.min.js"></script>
+  <script src="/js/vendor/html5shiv.js"></script>
+  <script src="/js/vendor/respond.min.js"></script>
   <![endif]-->
 
 </head>
 
 <body class="{{#ifeq background 'belize' }}background-belize{{/ifeq}} {{#ifeq background 'green' }}background-green{{/ifeq}}">
-  {{>navigation}}
-  <div class="container" role="main">
-    {{> notifications}}
-    {{{body}}}
-  </div>
+{{>navigation}}
+<div class="container" role="main">
+  {{> notifications}}
+  {{{body}}}
+</div>
 
 <script src="/js/vendor/jquery.min.js"></script>
 <script src="/js/flat-ui.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/js/application.js"></script>
 
 </body>

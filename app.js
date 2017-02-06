@@ -35,6 +35,9 @@ const parseUniqueViolationError = helpers.parseUniqueViolationError;
 const isPostgresError = helpers.isPostgresError;
 const methodOverride = require('method-override');
 const PgError = require('pg-error');
+
+const passportSocketIo = require('passport.socketio');
+
 // Controllers
 const homeController = require('./controllers/home.controller');
 const accountController = require('./controllers/account.controller');
@@ -60,6 +63,11 @@ app.set('port', appPort);
 const server = http.createServer(app);
 
 /**
+ * Create Socket.io server.
+ */
+const io = require('socket.io')(server);
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 
@@ -67,16 +75,17 @@ server.listen(appPort);
 server.on('error', onError);
 server.on('listening', onListening);
 
-
+// Define cookie expire date and session store
 const cookieExpirationDate = new Date();
 const cookieExpirationDays = 1;
 cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
+const sessionStore = new FileStore({ path: './sessions' });
 
+// Initialize database connection
 const knex = Knex(knexConfig);
 // Bind all models to a knex instance (for only one database).
 // If there is more than one database, use Model.bindKnex method.
 Model.knex(knex);
-
 
 // initialize authentication (Passport strategies)
 authentication.init(app);
@@ -113,15 +122,33 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize session filestore
 app.use(session({
-  store: new FileStore({ path: './sessions' }),
+  store: sessionStore,
   secret: process.env.SECRET_KEY,
   resave: true,
+  key: process.env.SESSION_KEY,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    expires: cookieExpirationDate // use expires instead of maxAge
+    expires: cookieExpirationDate
   }
 }));
+
+// Authorize Socket.io via session info stored by Passport
+io.use(passportSocketIo.authorize({
+  cookieParser,
+  key: process.env.SESSION_KEY,
+  secret: process.env.SECRET_KEY,
+  store: sessionStore
+}));
+
+io.on('connection', (socket) => {
+  log('a user connected');
+
+
+  socket.on('disconnect', () => {
+    log('user disconnected');
+  });
+});
 
 // Use flash messages
 app.use(flash());
@@ -153,6 +180,8 @@ app.put('/change_password', ensureAuthenticatedRedirect(), accountController.cha
 app.delete('/profile', ensureAuthenticatedRedirect(), accountController.profileDelete);
 app.use('/notes', ensureAuthenticatedRedirect(), notesRoutes);
 app.use('/api/v1', apiRoutes);
+
+notesRoutes.socketio(io);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
