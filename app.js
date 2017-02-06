@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 const expressHbs = require('express-handlebars');
 const fs = require('fs');
 const hbsConfig = require('./config/handlebars');
-const error = require('debug')('notes-app:error');
+const logError = require('debug')('notes-app:error');
 const log = require('debug')('notes-app:main');
 const debug = require('debug')('notes-app:server');
 const dotenv = require('dotenv');
@@ -50,8 +50,8 @@ const app = express();
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const appPort = normalizePort(process.env.PORT || '3000');
+app.set('port', appPort);
 
 /**
  * Create HTTP server.
@@ -63,7 +63,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(appPort);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -163,11 +163,11 @@ app.use((req, res, next) => {
 
 // general error handler
 app.use((err, req, res, next) => {
-  error(`${(err.status || err.statusCode || 500)} ${err.message || err.data || {}}`);
+  logError(`${(err.status || err.statusCode || 500)} ${err.message || err.data || {}}`);
 
   // Handle validation errors from Objection.js ORM
   if (err.constructor.name === 'ValidationError') {
-    error('ORM VALIDATION ERROR');
+    logError('ORM VALIDATION ERROR');
     res.status(err.statusCode || err.status || 500).json({
       error: {
         code: 'VALIDATION-ERROR',
@@ -177,7 +177,7 @@ app.use((err, req, res, next) => {
     });
   } else if (err instanceof PgError) {
     // Handle errors from the Postgresql database
-    error('PG DB ERROR');
+    logError('PG DB ERROR');
     // Other approach: if (isPostgresError(err)) ..
     // const uniqueViolationErrors = parseUniqueViolationError(err);
     //
@@ -217,7 +217,7 @@ app.use((err, req, res, next) => {
 // handle uncaught exceptions - ONLY IN DEVELOPMENT
 if (app.get('env') === 'development') {
   process.on('uncaughtException', (err) => {
-    error(`App crashed!! - ${(err.stack || err)}`);
+    logError(`App crashed!! - ${(err.stack || err)}`);
   });
 }
 
@@ -250,18 +250,18 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
+  const bind = typeof appPort === 'string'
+    ? `Pipe ${appPort}`
+    : `Port ${appPort}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`);
+      logError(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
+      logError(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
