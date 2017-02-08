@@ -12,21 +12,23 @@
         <form action="/signup" method="POST">
           <div class="form-group">
             <input name="email" type="text" class="form-control login-field" value="{{previousSignupAttempt.email}}"
-                   placeholder="Enter your email" id="login-name">
+            placeholder="Enter your email" id="login-name">
             <label class="login-field-icon fui-user" for="email"></label>
           </div>
           <div class="form-group">
-            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password"
-                   id="login-pass-cofirm">
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass-cofirm">
             <label class="login-field-icon fui-lock" for="password"></label>
           </div>
           <div class="form-group">
-            <input name="password_confirm" type="password" class="form-control login-field" value=""
-                   placeholder="Confirm Password" id="login-pass-confirm">
+            <input name="password_confirm" type="password" class="form-control login-field" value="" placeholder="Confirm Password" id="login-pass-confirm">
             <label class="login-field-icon fui-lock" for="password_confirm"></label>
           </div>
           <button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
           <a class="login-link" href="/login">Already signed up? Log in here.</a>
+          <div class="hr-title text-center"><span>or</span></div>
+          <div class="btn-toolbar text-center">
+            <a href="/auth/facebook"><span class="fui-facebook"></span> Sign in with Facebook</a>
+          </div>
         </form>
       </div>
     </div>

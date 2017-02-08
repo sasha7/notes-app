@@ -5,6 +5,7 @@ const User = require('../models/user');
 const util = require('util');
 const log = require('debug')('notes-app:account-controller');
 const error = require('debug')('notes-app:error');
+const _ = require('lodash');
 
 const loginGet = (req, res, next) => {
   const previousLoginAttempt = req.session.previousLoginAttempt || '';
@@ -138,9 +139,7 @@ const signupGet = (req, res, next) => {
 
 const signupPost = (req, res, next) => {
   // Save singup info to session so we can be show previous data on failed attempts.
-  req.session.previousSignupAttempt = {
-    email: req.body.email,
-  } || {};
+  req.session.previousSignupAttempt = { email: req.body.email } || {};
 
   req.assert('email', 'Email is not valid.').isEmail();
   req.assert('email', 'Email cannot be blank.').notEmpty();
@@ -173,6 +172,30 @@ const signupPost = (req, res, next) => {
   });
 };
 
+// Unlink OAuth provider
+const unlinkProvider = (req, res, next) => {
+  const provider = req.params.provider;
+  const validProviders = ['facebook'];
+
+  // check if provider is valid
+  if (!_.isEmpty(provider) && _.indexOf(validProviders, provider) === -1) {
+    req.flash('error', { msg: 'Invalid OAuth Provider' });
+    return res.redirect('/profile');
+  }
+
+  const data = {};
+  data[provider] = '';
+  data.picture = '';
+
+  User.query()
+    .patchAndFetchById(req.user.id, data)
+    .then((user) => {
+      req.flash('success', { msg: `Your ${provider} account has been unlinked.` });
+      return res.redirect('/profile');
+    })
+    .catch(next);
+};
+
 const AccountController = {
   loginGet,
   loginPost,
@@ -182,7 +205,8 @@ const AccountController = {
   profileGet,
   profilePut,
   profileDelete,
-  changePassword
+  changePassword,
+  unlinkProvider
 };
 
 module.exports = AccountController;

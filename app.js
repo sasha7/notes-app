@@ -50,6 +50,11 @@ dotenv.load();
 const app = express();
 
 /**
+ * Social Login Settings
+ */
+const FACEBOOK_SCOPE = process.env.FACEBOOK_SCOPE ? process.env.FACEBOOK_SCOPE.split(',') : ['email', 'user_location'];
+
+/**
  * Get port from environment and store in Express.
  */
 
@@ -143,8 +148,6 @@ io.use(passportSocketIo.authorize({
 
 io.on('connection', (socket) => {
   log('a user connected');
-
-
   socket.on('disconnect', () => {
     log('user disconnected');
   });
@@ -172,11 +175,17 @@ app.post('/login', accountController.loginPost);
 app.get('/logout', accountController.logoutGet);
 app.get('/signup', accountController.signupGet);
 app.post('/signup', accountController.signupPost);
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: FACEBOOK_SCOPE }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
 
 // WITH authentication
 app.get('/profile', ensureAuthenticatedRedirect(), accountController.profileGet);
 app.put('/profile', ensureAuthenticatedRedirect(), accountController.profilePut);
 app.put('/change_password', ensureAuthenticatedRedirect(), accountController.changePassword);
+app.get('/unlink/:provider', ensureAuthenticatedRedirect(), accountController.unlinkProvider);
 app.delete('/profile', ensureAuthenticatedRedirect(), accountController.profileDelete);
 app.use('/notes', ensureAuthenticatedRedirect(), notesRoutes);
 app.use('/api/v1', apiRoutes);

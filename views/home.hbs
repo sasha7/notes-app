@@ -1,12 +1,12 @@
 <div class="jumbotron fade-in">
   <img src="img/icons/svg/clipboard.svg" alt="Notes-App">
-  <h2>Welcome {{user.username}}!</h2>
+  <h2>Welcome {{user.first_name}}!</h2>
   <p>Organize all of your public notes, everywhere you are!</p>
   <p>Receive live updates when other users edit notes.</p>
   <hr/>
   {{#if user }}
-  <p>Go ahed, jump to your <a href="/notes"><strong>notes</strong></a> list now.</p>
+    <p>Go ahed, jump to your <a href="/notes"><strong>notes</strong></a> list now.</p>
   {{else}}
-  <p><a href="/login"><strong>Log in</strong></a> to access notes list.</p>
+    <p><a href="/login"><strong>Log in</strong></a> to access notes list.</p>
   {{/if}}
 </div>

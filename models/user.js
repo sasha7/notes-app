@@ -46,7 +46,9 @@ class User extends Model {
 
   $beforeInsert(queryContext) {
     this.created_at = new Date().toISOString();
-    this.password = makeHash(this.password);
+    if (this.password) {
+      this.password = makeHash(this.password);
+    }
   }
 
   $beforeUpdate(opt, queryContext) {
@@ -68,7 +70,10 @@ module.exports = User;
  * @param  {string} plainText input text string
  * @return {string}           hashed string
  */
-const makeHash = plainText => bcrypt.hashSync(plainText, bcrypt.genSaltSync(10));
+const makeHash = (plainText) => {
+  if (!plainText) return;
+  return bcrypt.hashSync(plainText, bcrypt.genSaltSync(10));
+};
 
 /**
  * Generate link for getting Globally Recognized Avatar
