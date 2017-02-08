@@ -41,6 +41,8 @@ const passportSocketIo = require('passport.socketio');
 // Controllers
 const homeController = require('./controllers/home.controller');
 const accountController = require('./controllers/account.controller');
+const contactController = require('./controllers//contact.controller');
+
 // Routes
 const notesRoutes = require('./routes/notes'); // Notes CRUD pages
 const apiRoutes = require('./routes/api'); // RESTFul API /api/v1/[resource]
@@ -180,6 +182,8 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
   successRedirect: '/',
   failureRedirect: '/login'
 }));
+app.get('/contact', contactController.contactGet);
+app.post('/contact', contactController.contactPost);
 
 // WITH authentication
 app.get('/profile', ensureAuthenticatedRedirect(), accountController.profileGet);

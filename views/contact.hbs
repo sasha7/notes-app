@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Contact Form</h3>
+      </div>
+      <div class="panel-body">
+        <form method="POST" action="/contact" class="form-horizontal">
+          <div class="form-group">
+            <label for="name" class="col-sm-2">Name</label>
+            <div class="col-sm-8">
+              <input type="text" name="name" id="name" class="form-control" value="{{contactFormOldInput.name}}" autofocus>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-sm-2">Email</label>
+            <div class="col-sm-8">
+              <input type="email" name="email" id="email" value="{{contactFormOldInput.email}}" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-sm-2">Body</label>
+            <div class="col-sm-8">
+              <textarea name="message" id="message" rows="7" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
