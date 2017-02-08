@@ -164,7 +164,6 @@ const destroy = (req, res, next) => {
 };
 
 const registerSocketio = (io) => {
-
   const getAndEmitNotes = () => {
     Note.query()
       .select('id', 'title')

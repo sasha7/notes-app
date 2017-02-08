@@ -13,6 +13,10 @@
   text-align: center;
 }
 
+.login-link {
+  color: #95A5A6;
+}
+
 .login-header img {
   width: 150px;
 }
