@@ -100,8 +100,7 @@ const initPassport = () => {
               if (user) {
                 // Put user info to session.
                 done(null, user);
-              }
-
+              } else {
               // User does not exist, check if email is already taken.
               User.query()
                 .where('email', profile._json.email)
@@ -152,6 +151,7 @@ const initPassport = () => {
                   error(err);
                   done(null);
                 });
+              }
             })
             .catch((err) => {
               error(err);

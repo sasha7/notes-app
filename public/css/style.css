@@ -96,3 +96,12 @@
   padding-right:14px;
   padding-left:25px;
 }
+
+
+.panel-footer-plain {
+  background-color: #fff;
+}
+
+.panel-action {
+  float: right;
+}

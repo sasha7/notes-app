@@ -1,11 +1,14 @@
 <div class="row">
   <div class="col col-xs-12 col-md-12 col-lg-8">
-    <div class="card">
-      <div class="card-block">
-        <h4 class="card-title">{{note.title}}</h4>
-        <p class="card-text">{{note.body}}</p>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">Note - {{note.title}}</h4>
       </div>
-      <div class="card-footer text-right">
+      <div class="panel-body">
+        <p>{{note.body}}</p>
+      </div>
+
+      <div class="panel-footer panel-footer-plain text-right">
         <a class="btn btn-primary" href="/notes/{{note.id}}/edit">Edit</a>
         <a class="btn btn-danger" href="/notes/{{note.id}}/confirm-destroy">Delete</a>
       </div>

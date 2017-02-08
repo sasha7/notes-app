@@ -2,3 +2,5 @@
 
 # Ignore files in public
 public/*
+sessions/*
+node_modules/*

@@ -6,12 +6,26 @@ This repo serves as a playground for the following technologies:
 * Express framework
 * Objection.js ORM
 * PostgresSQL
-
+* Socket.io
+* EventEmitter
+* Unit and Functional Testing
 
 Before installing make sure you have Node version >= 5.0 and NPM >= 3
 and that PostgreSQL has "uuid-ossp" module installed as an extension:
 * `SELECT * FROM pg_available_extensions;`
 * `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`
+
+
+# Features
+* Account login and signup with:
+** local credentials (email and password)
+** OAuth provider (Facebook)
+* Reset password feature
+* Notes CRUD pages
+* My profile page with extra option to link/unlink OAuth provider
+* Automatic updating of notes list on `/notes` page when anyone updates, deletes or creates new note
+* Contact form
+* Simple API examples `/api/v1/users`, `/api/v1/notes`
 
 
 # Quick start
