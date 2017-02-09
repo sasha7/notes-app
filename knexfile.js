@@ -19,9 +19,12 @@ function emitPgError(err) {
 module.exports = {
   client: process.env.DB_CLIENT,
   connection: {
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    host: process.env.NODE_ENV === 'production' ? 'db' : process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'postgres',
+    user: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || 'postgres',
+    charset: 'utf8',
+    port: 5432
   },
   pool: {
     min: 2,
