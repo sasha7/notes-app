@@ -1,6 +1,9 @@
 # /node_modules/* and /bower_components/* ignored by default
 
 # Ignore files in public
-public/*
-sessions/*
-node_modules/*
+.idea
+public
+sessions
+node_modules
+reports
+logs
