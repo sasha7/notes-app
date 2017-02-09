@@ -52,3 +52,6 @@ notes.levelup
 
 // Express sessions
 sessions
+
+// Various reports, e.g. eslint html report
+reports
