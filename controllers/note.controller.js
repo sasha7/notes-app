@@ -85,7 +85,7 @@ const edit = (req, res, next) => {
 const store = (req, res, next) => {
   const body = req.body;
   Note.query()
-    .insertAndFetch(body)
+    .insertAndFetch({ title: req.body.title, body: req.body.body })
     .then((note) => {
       res.redirect(`/notes/${note.id}`);
     })
