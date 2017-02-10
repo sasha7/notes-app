@@ -31,8 +31,6 @@ you can use Docker!
 * Contact form
 * Simple API examples `/api/v1/users`, `/api/v1/notes`
 
-
-
 # Quick start
 ```bash
 # clone our repo
@@ -81,5 +79,47 @@ npm run db:migrate
 
 # stop docker containers
 docker-compose stop
+
+```
+
+# REST API Example usage
+
+```bash
+
+# You can pretty print json responses by using pipe operator and
+# the following commands: `| python -mjson.tool` or `| jq`.
+# If needed, install `jq`in OSX: `brew install jq`
+
+# All note ids are using UUIDv4
+
+# GET a list of notes
+curl \
+--request GET \
+http://localhost:3000/api/v1/notes
+
+# Get a single note
+curl \
+--request GET \
+http://localhost:3000/api/v1/notes/:id
+
+# Create a single note
+curl \
+--header "Content-Type: application/json" \
+--request POST \
+--data '{"title": "Test Title", "body": "Test note"}' \
+http://localhost:3000/notes
+
+# Update a note
+curl \
+--header "Content-type: application/json"
+--request PUT \
+--data '{"title:": "Updated title", "body": "Updated note"}' \
+http://localhost:3000/notes/:id
+
+# Delete a note
+curl \
+--header "Content-type: application/json" \
+--request DELETE \
+http://localhost:3000/notes/:id
 
 ```
