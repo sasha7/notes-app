@@ -18,10 +18,12 @@
     "start": "node ./app.js",
     "debug": "DEBUG=notes-app:* node --nolazy --debug-brk=5858 ./app.js",
     "watch": "./node_modules/.bin/nodemon ./app.js",
+    "watch:debug": "./node_modules/.bin/nodemon --inspect ./app.js",
     "eslint": "./node_modules/.bin/eslint .",
     "eslint:fix": "./node_modules/.bin/eslint . --fix",
     "eslint:html": "./node_modules/.bin/eslint . -f html -o ./reports/lint-results.html; exit 0",
     "db:migrate": "./node_modules/.bin/knex migrate:latest",
+    "db:seed": "./node_modules/.bin/knex seed:run",
     "test": "mocha"
   },
   "pre-commit": [
