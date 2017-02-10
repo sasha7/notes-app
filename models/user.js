@@ -20,6 +20,8 @@ class User extends Model {
       properties: {
         id: { type: 'string' },
         password: { type: 'string' },
+        passwordResetExpires: { anyOf: [{ type: 'string', format: 'date-time' }, { type: null }] },
+        passwordResetToken: { anyOf: [{ type: 'string' }, { type: null }] },
         email: { type: 'string', format: 'email', maxLength: 30 },
         first_name: { type: 'string', minLength: 1, maxLength: 40 },
         last_name: { type: 'string', maxLength: 40 },

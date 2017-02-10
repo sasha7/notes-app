@@ -3,9 +3,20 @@ const sanitizerConfig = require('../config/sanitizer');
 const emailSanitizerConfig = sanitizerConfig.email;
 const User = require('../models/user');
 const util = require('util');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const log = require('debug')('notes-app:account-controller');
 const error = require('debug')('notes-app:error');
 const _ = require('lodash');
+const Promise = require('bluebird');
+
+const mailGunConfig = {
+  service: 'Mailgun',
+  auth: {
+    user: process.env.MAILGUN_USERNAME,
+    pass: process.env.MAILGUN_PASSWORD
+  }
+};
 
 const loginGet = (req, res, next) => {
   const previousLoginAttempt = req.session.previousLoginAttempt || '';
@@ -196,6 +207,183 @@ const unlinkProvider = (req, res, next) => {
     .catch(next);
 };
 
+const forgotGet = (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  res.render('account/forgot', {
+    title: 'Forgot Password',
+  });
+};
+
+const forgotPost = (req, res, next) => {
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('email', 'Email cannot be blank').notEmpty();
+  req.sanitize('email').normalizeEmail(emailSanitizerConfig);
+
+  req.getValidationResult().then((result) => {
+    if (!result.isEmpty()) {
+      const errors = result.array();
+      req.flash('errors', errors);
+      return res.redirect('/forgot');
+    }
+
+    const email = req.body.email;
+
+    _findUserByEmail(email)
+      .then(_setPasswordResetToken)
+      .then(data => _sendEmailResetPassword(data.token, data.user, req.headers.host))
+      .then((user) => {
+        req.flash('info', { msg: `An email has been sent to ${user.email} with further instructions.` });
+        res.redirect('/forgot');
+      })
+      .catch(Error, (err) => {
+        if (err.message === 'User not found') {
+          req.flash('errors', { msg: `The email address ${email} is not associated with any account.` });
+          res.redirect('/forgot');
+        } else {
+          return Promise.reject(err);
+        }
+      })
+      .catch(next);
+  });
+};
+
+const resetGet = (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+
+  User.query()
+    .where('passwordResetToken', req.params.token)
+    .where('passwordResetExpires', '>', new Date())
+    .first()
+    .then((user) => {
+      if (!user) {
+        req.flash('error', {
+          msg: 'Password reset token is invalid or has expired.'
+        });
+        res.redirect('/forgot');
+      } else {
+        res.render('account/reset', {
+          title: 'Password Reset'
+        });
+      }
+    });
+};
+
+const resetPost = (req, res, next) => {
+  // Validation rules
+  req.assert('password', 'Password must be at least 4 characters long').len(4);
+  req.assert('confirm', 'Passwords must match').equals(req.body.password);
+
+  // Validate body input fields
+  req.getValidationResult().then((result) => {
+    if (!result.isEmpty()) {
+      const errors = result.array();
+      req.flash('errors', errors);
+      res.redirect('back');
+    } else {
+      // find user by token, reset password, reset token, login user and send email notification.
+      _findUserByPasswordResetToken(req.params.token)
+        .then(user => _updatePasswordAndResetToken(user, req.body.password))
+        .then(_sendEmailPasswordChanged)
+        .then((user) => {
+          req.logIn(user, (err) => {
+            req.flash('success', { msg: 'Your password has been changed successfully.' });
+            res.redirect('/profile');
+          });
+        })
+        .catch(Error, (err) => {
+          if (err.message === 'Reset token not found or invalid') {
+            req.flash('error', { msg: 'Password reset token is invalid or has expired.' });
+            res.redirect('back');
+          } else {
+            return Promise.reject(err);
+          }
+        })
+        .catch(next);
+    }
+  });
+};
+
+const _findUserByEmail = email => User.query()
+  .where('email', email)
+  .first()
+  .then((user) => {
+    if (!user) {
+      return Promise.reject(new Error('User not found'));
+    }
+    return Promise.resolve(user);
+  });
+
+const _setPasswordResetToken = (user) => {
+  const token = crypto.randomBytes(16).toString('hex');
+  const expires = (new Date(Date.now() + 3600000)).toISOString();
+  return user.$query()
+    .patch({ passwordResetToken: token, passwordResetExpires: expires })
+    .then(() => Promise.resolve({ token, user }));
+};
+
+const _findUserByPasswordResetToken = token => User.query()
+  .where('passwordResetToken', token)
+  .where('passwordResetExpires', '>', new Date())
+  .first()
+  .then((user) => {
+    if (!user) {
+      return Promise.reject(new Error('Reset token not found or invalid'));
+    }
+    return Promise.resolve(user);
+  });
+
+const _updatePasswordAndResetToken = (user, password) => user.$query()
+  .patch({ password, passwordResetToken: null, passwordResetExpires: null })
+  .then(() => Promise.resolve(user));
+
+const _sendEmailPasswordChanged = (user) => {
+  const transporter = nodemailer.createTransport(mailGunConfig);
+
+  const mailOptions = {
+    from: 'support@yourdomain.com',
+    to: user.email,
+    subject: '✔ Your NotesApp password has been changed',
+    text: `
+      Hello ${user.first_name},\n\n
+      This is a confirmation that the password for your account ${user.email} has just been changed.\n
+    `
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) reject(err);
+      resolve(user);
+    });
+  });
+};
+
+const _sendEmailResetPassword = (token, user, host) => {
+  const transporter = nodemailer.createTransport(mailGunConfig);
+
+  const mailOptions = {
+    from: 'support@yourdomain.com',
+    to: user.email,
+    subject: '✔ Reset your password on NotesApp',
+    text: `
+      You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
+      Please click on the following link, or paste this into your browser to complete the process:\n\n
+      http://${host}/reset/${token}\n\n
+      If you did not request this, please ignore this email and your password will remain unchanged.\n
+    `
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (err) => {
+      if (err) reject(err);
+      resolve(user);
+    });
+  });
+};
+
 const AccountController = {
   loginGet,
   loginPost,
@@ -206,7 +394,11 @@ const AccountController = {
   profilePut,
   profileDelete,
   changePassword,
-  unlinkProvider
+  unlinkProvider,
+  forgotGet,
+  forgotPost,
+  resetGet,
+  resetPost
 };
 
 module.exports = AccountController;

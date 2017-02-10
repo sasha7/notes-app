@@ -16,8 +16,8 @@ class Note extends Model {
       required: ['title', 'body'],
       properties: {
         id: { type: 'string' },
-        title: { type: 'string', minLength: 1, maxLength: 100 },
-        body: { type: 'string', minLength: 1, maxLength: 50 }
+        title: { type: 'string', minLength: 1, maxLength: 255 },
+        body: { type: 'string', minLength: 1, maxLength: 1000 }
       }
     };
   }

@@ -177,6 +177,10 @@ app.post('/login', accountController.loginPost);
 app.get('/logout', accountController.logoutGet);
 app.get('/signup', accountController.signupGet);
 app.post('/signup', accountController.signupPost);
+app.get('/forgot', accountController.forgotGet);
+app.post('/forgot', accountController.forgotPost);
+app.get('/reset/:token', accountController.resetGet);
+app.post('/reset/:token', accountController.resetPost);
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: FACEBOOK_SCOPE }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
   successRedirect: '/',
