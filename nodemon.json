@@ -9,12 +9,7 @@
     "reports"
   ],
   "verbose": true,
-  "execMap": {
-    "js": "node --inspect"
-  },
-  "watch": [
-
-  ],
+  "watch": [],
   "env": {
     "NODE_ENV": "development",
     "DEBUG": "notes-app:*"
