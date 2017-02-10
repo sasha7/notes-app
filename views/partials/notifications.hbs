@@ -1,56 +1,48 @@
-<div class="row">
-  <div class="col-12">
-    {{#if messages.error}}
-    <div role="alert" class="alert alert-danger alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div>{{messages.error}}</div>
-    </div>
-    {{/if}}
-
-    {{#if messages.errors}}
-    <div role="alert" class="alert alert-danger alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{#each messages.errors}}
-      <div>{{msg}}</div>
-      {{/each}}
-    </div>
-    {{/if}}
-
-    {{#if messages.info}}
-    <div role="alert" class="alert alert-info alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{#each messages.info}}
-      <div>{{msg}}</div>
-      {{/each}}
-    </div>
-    {{/if}}
-
-    {{#if messages.success}}
-    <div role="alert" class="alert alert-success alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{#each messages.success}}
-      <div>{{msg}}</div>
-      {{/each}}
-    </div>
-    {{/if}}
-
-    {{#if messages.warning}}
-    <div role="alert" class="alert alert-warning alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{#each messages.warning}}
-      <div>{{msg}}</div>
-      {{/each}}
-    </div>
-    {{/if}}
-  </div>
+{{#if messages.error}}
+<div role="alert" class="alert alert-danger alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div>{{messages.error}}</div>
 </div>
+{{/if}}
+{{#if messages.errors}}
+<div role="alert" class="alert alert-danger alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{#each messages.errors}}
+  <div>{{msg}}</div>
+  {{/each}}
+</div>
+{{/if}}
+{{#if messages.info}}
+<div role="alert" class="alert alert-info alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{#each messages.info}}
+  <div>{{msg}}</div>
+  {{/each}}
+</div>
+{{/if}}
+{{#if messages.success}}
+<div role="alert" class="alert alert-success alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{#each messages.success}}
+  <div>{{msg}}</div>
+  {{/each}}
+</div>
+{{/if}}
+{{#if messages.warning}}
+<div role="alert" class="alert alert-warning alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{#each messages.warning}}
+  <div>{{msg}}</div>
+  {{/each}}
+</div>
+{{/if}}

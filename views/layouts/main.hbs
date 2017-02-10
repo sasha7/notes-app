@@ -6,36 +6,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{title}}</title>
-
   <!-- Loading Bootstrap -->
   <link href="/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- Loading Flat UI -->
   <link href="/css/flat-ui.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
-
   <link rel="shortcut icon" href="/img/favicon.ico">
-
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
   <!--[if lt IE 9]>
   <script src="/js/vendor/html5shiv.js"></script>
   <script src="/js/vendor/respond.min.js"></script>
   <![endif]-->
-
 </head>
 
 <body class="{{#ifeq background 'belize' }}background-belize{{/ifeq}} {{#ifeq background 'green' }}background-green{{/ifeq}}">
-{{>navigation}}
-<div class="container" role="main">
-  {{> notifications}}
-  {{{body}}}
-</div>
-
-<script src="/js/vendor/jquery.min.js"></script>
-<script src="/js/flat-ui.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/application.js"></script>
-
+  {{>navigation}}
+  <div class="container" role="main">
+    <div class="row">
+      <div class="col-xs-12 col-lg-offset-1 col-lg-10 coll-lg-offset-1">
+        {{> notifications}}
+      </div>
+    </div>
+    {{{body}}}
+  </div>
+  <script src="/js/vendor/jquery.min.js"></script>
+  <script src="/js/flat-ui.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/application.js"></script>
 </body>
 
 </html>

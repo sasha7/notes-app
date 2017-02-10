@@ -1,130 +1,126 @@
 <div class="row">
-  <div class="col-12">
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <form method="POST" action="/profile?_method=PUT" class="form-horizontal">
-        <fieldset>
-          <legend>Profile Information</legend>
-          <div class="form-group">
-            <label class="col-sm-3">Avatar</label>
-            <div class="col-sm-4">
-              {{# if user.picture }}
-                <img src="{{user.picture}}" class="profile" width="100" height="100">
-              {{else }}
-                <img src="{{user.avatar}}" class="profile" width="100" height="100">
-              {{/if}}
+  <div class="col-sm-12 col-lg-offset-1 col-lg-10 coll-lg-offset-1">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form method="POST" action="/profile?_method=PUT" class="form-horizontal">
+          <fieldset>
+            <legend>Profile Information</legend>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Avatar</label>
+              <div class="col-sm-4">
+                {{# if user.picture }}
+                <img src="{{user.picture}}" class="profile" width="100" height="100"> {{else }}
+                <img src="{{user.avatar}}" class="profile" width="100" height="100"> {{/if}}
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="email" class="col-sm-3">Email</label>
-            <div class="col-sm-7">
-              <input type="email" name="email" id="email" class="form-control" value="{{user.email}}">
+            <div class="form-group">
+              <label for="email" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" name="email" id="email" class="form-control" value="{{user.email}}">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="first_name" class="col-sm-3">First Name</label>
-            <div class="col-sm-7">
-              <input type="text" name="first_name" id="first_name" class="form-control" value="{{user.first_name}}">
+            <div class="form-group">
+              <label for="first_name" class="col-sm-2 control-label">First Name</label>
+              <div class="col-sm-10">
+                <input type="text" name="first_name" id="first_name" class="form-control" value="{{user.first_name}}">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="last_name" class="col-sm-3">Last Name</label>
-            <div class="col-sm-7">
-              <input type="text" name="last_name" id="last_name" class="form-control" value="{{user.last_name}}">
+            <div class="form-group">
+              <label for="last_name" class="col-sm-2 control-label">Last Name</label>
+              <div class="col-sm-10">
+                <input type="text" name="last_name" id="last_name" class="form-control" value="{{user.last_name}}">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3">Gender</label>
-            <div class="col-sm-4">
-              <label class="radio radio-inline">
-                <input type="radio" name="gender" value="male" data-toggle="radio"
-                       {{#ifeq user.gender 'male'}}checked{{/ifeq}}><span>Male</span>
-              </label>
-              <label class="radio radio-inline">
-                <input type="radio" name="gender" value="female" data-toggle="radio"
-                       {{#ifeq user.gender 'female'}}checked{{/ifeq}}><span>Female</span>
-              </label>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Gender</label>
+              <div class="col-sm-4">
+                <label class="radio radio-inline">
+                  <input type="radio" name="gender" value="male" data-toggle="radio" {{#ifeq user.gender 'male'}}checked{{/ifeq}}><span>Male</span>
+                </label>
+                <label class="radio radio-inline">
+                  <input type="radio" name="gender" value="female" data-toggle="radio" {{#ifeq user.gender 'female'}}checked{{/ifeq}}><span>Female</span>
+                </label>
+              </div>
+              <fieldset>
             </div>
-            <fieldset>
-          </div>
-          <div class="form-group">
-            <label for="location" class="col-sm-3">Location</label>
-            <div class="col-sm-7">
-              <input type="text" name="location" id="location" class="form-control" value="{{user.location}}">
+            <div class="form-group">
+              <label for="location" class="col-sm-2 control-label">Location</label>
+              <div class="col-sm-10">
+                <input type="text" name="location" id="location" class="form-control" value="{{user.location}}">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="website" class="col-sm-3">Website</label>
-            <div class="col-sm-7">
-              <input type="text" name="website" id="website" class="form-control" value="{{user.website}}">
+            <div class="form-group">
+              <label for="website" class="col-sm-2 control-label">Website</label>
+              <div class="col-sm-10">
+                <input type="text" name="website" id="website" class="form-control" value="{{user.website}}">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-4">
-              <button type="submit" class="btn btn-success">Update Profile</button>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-8">
+                <button type="submit" class="btn btn-success">Update Profile</button>
+              </div>
             </div>
-          </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <form method="POST" action="/change_password?_method=PUT" class="form-horizontal">
-        <legend>Change Password</legend>
-        <div class="form-group">
-          <label for="password" class="col-sm-3">New Password</label>
-          <div class="col-sm-7">
-            <input type="password" name="password" id="password" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="password_confirm" class="col-sm-3">Confirm Password</label>
-          <div class="col-sm-7">
-            <input type="password" name="password_confirm" id="password_confirm" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-4 col-sm-offset-3">
-            <button type="submit" class="btn btn-success">Change Password</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="form-horizontal">
-        <fieldset>
-          <legend>Linked Accounts</legend>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form method="POST" action="/change_password?_method=PUT" class="form-horizontal">
+          <legend>Change Password</legend>
           <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-4">
-              {{#if user.facebook}}
+            <label for="password" class="col-sm-2 control-label">New Password</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" id="password" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password_confirm" class="col-sm-2 control-label">Confirm Password</label>
+            <div class="col-sm-10">
+              <input type="password" name="password_confirm" id="password_confirm" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+              <button type="submit" class="btn btn-success">Change Password</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-horizontal">
+          <fieldset>
+            <legend>Linked Accounts</legend>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-8">
+                {{#if user.facebook}}
                 <p><a href="/unlink/facebook" class="text-danger">Unlink your Facebook account</a></p>
-              {{else}}
+                {{else}}
                 <p><a href="/auth/facebook">Link your Facebook account</a></p>
-              {{/if}}
+                {{/if}}
+              </div>
             </div>
-          </div>
-        </fieldset>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form method="POST" action="/profile?_method=DELETE" class="form-horizontal">
+          <fieldset>
+            <legend>Delete Account</legend>
+            <div class="form-group">
+              <p class="col-sm-offset-2 col-sm-10">You can delete your account, but keep in mind this action is irreversible.
+              </p>
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-danger">Delete my account</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <form method="POST" action="/profile?_method=DELETE" class="form-horizontal">
-        <fieldset>
-          <legend>Delete Account</legend>
-          <div class="form-group">
-            <p class="col-sm-offset-3 col-sm-9">You can delete your account, but keep in mind this action is
-              irreversible.</p>
-            <div class="col-sm-offset-3 col-sm-9">
-              <button type="submit" class="btn btn-danger">Delete my account</button>
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </div>
-  </div>
-</div>
 </div>
 </div>
